@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - X Clone</title>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar de navigation -->
+        <aside class="sidebar">
+            <nav class="nav-menu">
+                <div class="nav-logo">
+                    <h1>X</h1>
+                </div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link active">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="profile.html" class="nav-link">Profil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="login.html" class="nav-link">Déconnexion</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenu principal -->
+        <main class="main-content">
+            <header class="timeline-header">
+                <h2>Accueil</h2>
+            </header>
+
+            <!-- Formulaire de création de tweet -->
+            <section class="tweet-form-section">
+                <form class="tweet-form" id="tweetForm">
+                    <div class="tweet-form-content">
+                        <div class="tweet-form-avatar">
+                            <img src="https://via.placeholder.com/48" alt="Avatar" class="avatar">
+                        </div>
+                        <div class="tweet-form-inputs">
+                            <textarea id="tweetContent" class="tweet-textarea" placeholder="Quoi de neuf ?"
+                                maxlength="280" rows="4"></textarea>
+                            <div class="tweet-form-footer">
+                                <span class="char-counter">
+                                    <span id="charCount">0</span>/280
+                                </span>
+                                <button type="submit" class="btn-tweet">Tweeter</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Timeline des tweets -->
+            <section class="timeline">
+                <article class="tweet-card">
+                    <div class="tweet-avatar">
+                        <img src="https://via.placeholder.com/48" alt="Avatar" class="avatar">
+                    </div>
+                    <div class="tweet-content">
+                        <div class="tweet-header">
+                            <span class="tweet-author-name">John Doe</span>
+                            <span class="tweet-author-username">@johndoe</span>
+                            <span class="tweet-date">· 2h</span>
+                        </div>
+                        <p class="tweet-text">Hello, this is my first tweet!</p>
+                        <div class="tweet-actions">
+                            <button class="tweet-action-btn" aria-label="Répondre">
+                                <span class="tweet-action-icon">💬</span>
+                                <span class="tweet-action-count">5</span>
+                            </button>
+                            <button class="tweet-action-btn" aria-label="Retweeter">
+                                <span class="tweet-action-icon">🔄</span>
+                                <span class="tweet-action-count">10</span>
+                            </button>
+                            <button class="tweet-action-btn" aria-label="J'aime">
+                                <span class="tweet-action-icon">❤️</span>
+                                <span class="tweet-action-count">20</span>
+                            </button>
+                            <button class="tweet-action-btn" aria-label="Partager">
+                                <span class="tweet-action-icon">📤</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="tweet-card">
+                    <div class="tweet-avatar">
+                        <img src="https://via.placeholder.com/48" alt="Avatar" class="avatar">
+                    </div>
+                    <div class="tweet-content">
+                        <div class="tweet-header">
+                            <span class="tweet-author-name">Alice Doe</span>
+                            <span class="tweet-author-username">@alicedoe</span>
+                            <span class="tweet-date">· 5h</span>
+                        </div>
+                        <p class="tweet-text">Just had a great day at the park!</p>
+                        <div class="tweet-actions">
+                            <button class="tweet-action-btn" aria-label="Répondre">
+                                <span class="tweet-action-icon">💬</span>
+                                <span class="tweet-action-count">2</span>
+                            </button>
+                            <button class="tweet-action-btn" aria-label="Retweeter">
+                                <span class="tweet-action-icon">🔄</span>
+                                <span class="tweet-action-count">8</span>
+                            </button>
+                            <button class="tweet-action-btn" aria-label="J'aime">
+                                <span class="tweet-action-icon">❤️</span>
+                                <span class="tweet-action-count">15</span>
+                            </button>
+                            <button class="tweet-action-btn" aria-label="Partager">
+                                <span class="tweet-action-icon">📤</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>

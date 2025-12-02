@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Se connecter - X Clone</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+
+<body>
+    <section class="overlay-modale">
+        <article class="conteneur-modale">
+            <header class="en-tete-modale">
+                <button class="fermer-modale" onclick="window.location.href='login.html'">
+                    <img src="images/icone-fermer.png" alt="Fermer" class="icone-fermer">
+                </button>
+                <img src="images/logo-x.png" alt="Logo X" class="logo-modale">
+            </header>
+
+            <main class="contenu-modale">
+                <h1 class="titre-modale">Connectez-vous à X</h1>
+
+                <section class="actions-authentification">
+                    <button type="button" class="bouton-social bouton-google">
+                        <img src="images/logo-google.png" alt="Logo Google" class="icone-bouton">
+                        G Se connecter avec Gmail
+                    </button>
+
+                    <button type="button" class="bouton-social bouton-apple">
+                        <img src="images/logo-apple.png" alt="Logo Apple" class="icone-bouton">
+                        Se connecter avec Apple
+                    </button>
+
+                    <p class="separateur">
+                        <span>OU</span>
+                    </p>
+                </section>
+
+                <form class="formulaire-authentification" id="loginForm">
+                    <fieldset class="groupe-formulaire">
+                        <input type="text" id="identifier" name="identifier" class="champ-formulaire"
+                            placeholder="Numéro de téléphone, adresse em" required>
+                    </fieldset>
+
+                    <button type="submit" class="bouton-principal"
+                        onclick="event.preventDefault(); window.location.href='login-password.html'">Suivant</button>
+                </form>
+
+                <nav class="liens-formulaire">
+                    <a href="#" class="lien-formulaire">Mot de passe oublié ?</a>
+                </nav>
+
+                <section class="changement-authentification">
+                    <p class="texte-changement">Vous n'avez pas de compte ? <a href="signup.html"
+                            class="lien-authentification">Inscrivez-vous</a></p>
+                </section>
+            </main>
+        </article>
+    </section>
+</body>
+
+</html>

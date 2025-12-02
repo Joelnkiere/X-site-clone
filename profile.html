@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - X Clone</title>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar de navigation -->
+        <aside class="sidebar">
+            <nav class="nav-menu">
+                <div class="nav-logo">
+                    <h1>X</h1>
+                </div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="profile.html" class="nav-link active">Profil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="login.html" class="nav-link">Déconnexion</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenu principal -->
+        <main class="main-content">
+            <!-- En-tête du profil -->
+            <header class="profile-header">
+                <div class="profile-cover">
+                    <img src="https://via.placeholder.com/600x200" alt="Bannière" class="cover-image">
+                </div>
+                <div class="profile-info">
+                    <div class="profile-avatar-section">
+                        <img src="https://via.placeholder.com/120" alt="Photo de profil" class="profile-avatar">
+                    </div>
+                    <div class="profile-details">
+                        <h1 class="profile-name">John Doe</h1>
+                        <p class="profile-username">@johndoe</p>
+                        <p class="profile-bio">Passionate about coding and open source.</p>
+                        <div class="profile-meta">
+                            <span class="profile-location">📍 Goma, DRC</span>
+                            <span class="profile-website">🔗 <a href="https://johndoe.com">johndoe.com</a></span>
+                            <span class="profile-joined">Rejoint en septembre 2023</span>
+                        </div>
+                        <div class="profile-stats">
+                            <span class="stat-item">
+                                <strong>180</strong> Abonnements
+                            </span>
+                            <span class="stat-item">
+                                <strong>200</strong> Abonnés
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Navigation du profil -->
+            <nav class="profile-nav">
+                <ul class="profile-nav-list">
+                    <li class="profile-nav-item">
+                        <a href="#tweets" class="profile-nav-link active">Tweets</a>
+                    </li>
+                    <li class="profile-nav-item">
+                        <a href="#replies" class="profile-nav-link">Réponses</a>
+                    </li>
+                    <li class="profile-nav-item">
+                        <a href="#media" class="profile-nav-link">Médias</a>
+                    </li>
+                    <li class="profile-nav-item">
+                        <a href="#likes" class="profile-nav-link">J'aime</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Liste des tweets de l'utilisateur -->
+            <section class="profile-tweets" id="tweets">
+                <article class="tweet-card">
+                    <div class="tweet-avatar">
+                        <img src="https://via.placeholder.com/48" alt="Avatar" class="avatar">
+                    </div>
+                    <div class="tweet-content">
+                        <div class="tweet-header">
+                            <span class="tweet-author-name">John Doe</span>
+                            <span class="tweet-author-username">@johndoe</span>
+                            <span class="tweet-date">· 2h</span>
+                        </div>
+                        <p class="tweet-text">Hello, this is my first tweet!</p>
+                        <div class="tweet-actions">
+                            <button class="tweet-action-btn" aria-label="Répondre">
+                                <span class="tweet-action-icon">💬</span>
+                                <span class="tweet-action-count">5</span>
+                            </button>
+                            <button class="tweet-action-btn" aria-label="Retweeter">
+                                <span class="tweet-action-icon">🔄</span>
+                                <span class="tweet-action-count">10</span>
+                            </button>
+                            <button class="tweet-action-btn" aria-label="J'aime">
+                                <span class="tweet-action-icon">❤️</span>
+                                <span class="tweet-action-count">20</span>
+                            </button>
+                            <button class="tweet-action-btn" aria-label="Partager">
+                                <span class="tweet-action-icon">📤</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="tweet-card">
+                    <div class="tweet-avatar">
+                        <img src="https://via.placeholder.com/48" alt="Avatar" class="avatar">
+                    </div>
+                    <div class="tweet-content">
+                        <div class="tweet-header">
+                            <span class="tweet-author-name">John Doe</span>
+                            <span class="tweet-author-username">@johndoe</span>
+                            <span class="tweet-date">· 1j</span>
+                        </div>
+                        <p class="tweet-text">Just had a great day at the park!</p>
+                        <div class="tweet-actions">
+                            <button class="tweet-action-btn" aria-label="Répondre">
+                                <span class="tweet-action-icon">💬</span>
+                                <span class="tweet-action-count">2</span>
+                            </button>
+                            <button class="tweet-action-btn" aria-label="Retweeter">
+                                <span class="tweet-action-icon">🔄</span>
+                                <span class="tweet-action-count">8</span>
+                            </button>
+                            <button class="tweet-action-btn" aria-label="J'aime">
+                                <span class="tweet-action-icon">❤️</span>
+                                <span class="tweet-action-count">15</span>
+                            </button>
+                            <button class="tweet-action-btn" aria-label="Partager">
+                                <span class="tweet-action-icon">📤</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
+

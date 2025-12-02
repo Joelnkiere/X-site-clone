@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer votre compte - X Clone</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+
+<body>
+    <section class="overlay-modale">
+        <article class="conteneur-modale">
+            <header class="en-tete-modale">
+                <button class="fermer-modale" onclick="window.location.href='signup.html'">
+                    <img src="images/icone-fermer.png" alt="Fermer" class="icone-fermer">
+                </button>
+                <img src="images/logo-x.png" alt="Logo X" class="logo-modale">
+            </header>
+
+            <main class="contenu-modale">
+                <h1 class="titre-modale">Créer votre compte</h1>
+
+                <form class="formulaire-authentification" id="signupForm">
+                    <fieldset class="groupe-formulaire">
+                        <input type="text" id="name" name="name" class="champ-formulaire" placeholder="Nom et prénom"
+                            required>
+                    </fieldset>
+
+                    <fieldset class="groupe-formulaire">
+                        <input type="tel" id="phone" name="phone" class="champ-formulaire" placeholder="Téléphone">
+                        <a href="#" class="lien-formulaire" id="useEmailLink">Utiliser un email</a>
+                    </fieldset>
+
+                    <fieldset class="groupe-formulaire">
+                        <label class="etiquette-formulaire">Date de naissance</label>
+                        <p class="info-formulaire">Ces informations ne seront pas publiques. Confirmez votre âge, même
+                            si ce compte est destiné à une entreprise, à un animal de compagnie, etc.</p>
+                        <section class="selecteurs-date">
+                            <select id="month" name="month" class="select-formulaire">
+                                <option value="">Mois</option>
+                                <option value="01">Janvier</option>
+                                <option value="02">Février</option>
+                                <option value="03">Mars</option>
+                                <option value="04">Avril</option>
+                                <option value="05">Mai</option>
+                                <option value="06">Juin</option>
+                                <option value="07">Juillet</option>
+                                <option value="08">Août</option>
+                                <option value="09">Septembre</option>
+                                <option value="10">Octobre</option>
+                                <option value="11">Novembre</option>
+                                <option value="12">Décembre</option>
+                            </select>
+                            <select id="day" name="day" class="select-formulaire">
+                                <option value="">Jour</option>
+                            </select>
+                            <select id="year" name="year" class="select-formulaire">
+                                <option value="">Année</option>
+                            </select>
+                        </section>
+                    </fieldset>
+
+                    <button type="submit" class="bouton-principal">Suivant</button>
+                </form>
+            </main>
+        </article>
+    </section>
+</body>
+
+</html>
