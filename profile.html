@@ -8,143 +8,140 @@
 </head>
 
 <body>
-    <div class="app-container">
-        <!-- Sidebar de navigation -->
-        <aside class="sidebar">
-            <nav class="nav-menu">
-                <div class="nav-logo">
+    <section class="conteneur-application">
+        <aside class="barre-laterale">
+            <nav class="menu-navigation">
+                <header class="logo-navigation">
                     <h1>X</h1>
-                </div>
-                <ul class="nav-list">
-                    <li class="nav-item">
-                        <a href="index.html" class="nav-link">Accueil</a>
+                </header>
+                <ul class="liste-navigation">
+                    <li class="element-navigation">
+                        <a href="index.html" class="lien-navigation">Accueil</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="profile.html" class="nav-link active">Profil</a>
+                    <li class="element-navigation">
+                        <a href="profile.html" class="lien-navigation actif">Profil</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="login.html" class="nav-link">Déconnexion</a>
+                    <li class="element-navigation">
+                        <a href="login.html" class="lien-navigation">Déconnexion</a>
                     </li>
                 </ul>
             </nav>
         </aside>
 
-        <!-- Contenu principal -->
-        <main class="main-content">
-            <!-- En-tête du profil -->
-            <header class="profile-header">
-                <div class="profile-cover">
-                    <img src="https://via.placeholder.com/600x200" alt="Bannière" class="cover-image">
-                </div>
-                <div class="profile-info">
-                    <div class="profile-avatar-section">
-                        <img src="https://via.placeholder.com/120" alt="Photo de profil" class="profile-avatar">
-                    </div>
-                    <div class="profile-details">
-                        <h1 class="profile-name">Joel Nkiere</h1>
-                        <p class="profile-username">@joelnkiere</p>
-                        <p class="profile-bio">Passionate about coding and open source.</p>
-                        <div class="profile-meta">
-                            <span class="profile-location">📍 Goma, DRC</span>
-                            <span class="profile-website">🔗 <a href="https://joelnkiere.com">joelnkiere.com</a></span>
-                            <span class="profile-joined">Rejoint en septembre 2023</span>
-                        </div>
-                        <div class="profile-stats">
-                            <span class="stat-item">
+        <main class="contenu-principal">
+            <header class="en-tete-profil">
+                <section class="banniere-profil">
+                    <img src="images/banniere-profil.jpg" alt="Bannière de profil" class="image-banniere">
+                </section>
+                <section class="informations-profil">
+                    <section class="section-avatar-profil">
+                        <img src="images/avatar-utilisateur.png" alt="Photo de profil de Joel Nkiere"
+                            class="avatar-profil">
+                    </section>
+                    <section class="details-profil">
+                        <h1 class="nom-profil">Joel Nkiere</h1>
+                        <p class="nom-utilisateur-profil">@joelnkiere</p>
+                        <p class="bio-profil">Passionate about coding and open source.</p>
+                        <section class="meta-profil">
+                            <span class="localisation-profil">📍 Goma, DRC</span>
+                            <span class="site-web-profil">🔗 <a href="https://joelnkiere.com"
+                                    class="lien-site-web">joelnkiere.com</a></span>
+                            <span class="date-creation-profil">Rejoint en septembre 2023</span>
+                        </section>
+                        <section class="statistiques-profil">
+                            <span class="element-statistique">
                                 <strong>180</strong> Abonnements
                             </span>
-                            <span class="stat-item">
+                            <span class="element-statistique">
                                 <strong>200</strong> Abonnés
                             </span>
-                        </div>
-                    </div>
-                </div>
+                        </section>
+                    </section>
+                </section>
             </header>
 
-            <!-- Navigation du profil -->
-            <nav class="profile-nav">
-                <ul class="profile-nav-list">
-                    <li class="profile-nav-item">
-                        <a href="#tweets" class="profile-nav-link active">Tweets</a>
+            <nav class="navigation-profil">
+                <ul class="liste-navigation-profil">
+                    <li class="element-navigation-profil">
+                        <a href="#tweets" class="lien-navigation-profil actif">Tweets</a>
                     </li>
-                    <li class="profile-nav-item">
-                        <a href="#replies" class="profile-nav-link">Réponses</a>
+                    <li class="element-navigation-profil">
+                        <a href="#reponses" class="lien-navigation-profil">Réponses</a>
                     </li>
-                    <li class="profile-nav-item">
-                        <a href="#media" class="profile-nav-link">Médias</a>
+                    <li class="element-navigation-profil">
+                        <a href="#medias" class="lien-navigation-profil">Médias</a>
                     </li>
-                    <li class="profile-nav-item">
-                        <a href="#likes" class="profile-nav-link">J'aime</a>
+                    <li class="element-navigation-profil">
+                        <a href="#jaime" class="lien-navigation-profil">J'aime</a>
                     </li>
                 </ul>
             </nav>
 
-            <!-- Liste des tweets de l'utilisateur -->
-            <section class="profile-tweets" id="tweets">
-                <article class="tweet-card">
-                    <div class="tweet-avatar">
-                        <img src="https://via.placeholder.com/48" alt="Avatar" class="avatar">
-                    </div>
-                    <div class="tweet-content">
-                        <div class="tweet-header">
-                            <span class="tweet-author-name">Joel Nkiere</span>
-                            <span class="tweet-author-username">@joelnkiere</span>
-                            <span class="tweet-date">· 2h</span>
-                        </div>
-                        <p class="tweet-text">Hello, this is my first tweet!</p>
-                        <div class="tweet-actions">
-                            <button class="tweet-action-btn" aria-label="Répondre">
-                                <span class="tweet-action-icon">💬</span>
-                                <span class="tweet-action-count">5</span>
+            <section class="tweets-profil" id="tweets">
+                <article class="carte-tweet">
+                    <section class="avatar-tweet">
+                        <img src="images/avatar-utilisateur.png" alt="Avatar de Joel Nkiere" class="avatar">
+                    </section>
+                    <section class="contenu-tweet">
+                        <header class="en-tete-tweet">
+                            <span class="nom-auteur">Joel Nkiere</span>
+                            <span class="nom-utilisateur">@joelnkiere</span>
+                            <span class="date-tweet">· 2h</span>
+                        </header>
+                        <p class="texte-tweet">Hello, this is my first tweet!</p>
+                        <nav class="actions-tweet">
+                            <a href="tweet-detail.html" class="bouton-action" aria-label="Répondre">
+                                <span class="icone-action">💬</span>
+                                <span class="compteur-action">5</span>
+                            </a>
+                            <button class="bouton-action" aria-label="Retweeter">
+                                <span class="icone-action">🔄</span>
+                                <span class="compteur-action">10</span>
                             </button>
-                            <button class="tweet-action-btn" aria-label="Retweeter">
-                                <span class="tweet-action-icon">🔄</span>
-                                <span class="tweet-action-count">10</span>
+                            <button class="bouton-action" aria-label="J'aime">
+                                <span class="icone-action">❤️</span>
+                                <span class="compteur-action">20</span>
                             </button>
-                            <button class="tweet-action-btn" aria-label="J'aime">
-                                <span class="tweet-action-icon">❤️</span>
-                                <span class="tweet-action-count">20</span>
+                            <button class="bouton-action" aria-label="Partager">
+                                <span class="icone-action">📤</span>
                             </button>
-                            <button class="tweet-action-btn" aria-label="Partager">
-                                <span class="tweet-action-icon">📤</span>
-                            </button>
-                        </div>
-                    </div>
+                        </nav>
+                    </section>
                 </article>
 
-                <article class="tweet-card">
-                    <div class="tweet-avatar">
-                        <img src="https://via.placeholder.com/48" alt="Avatar" class="avatar">
-                    </div>
-                    <div class="tweet-content">
-                        <div class="tweet-header">
-                            <span class="tweet-author-name">Joel Nkiere</span>
-                            <span class="tweet-author-username">@joelnkiere</span>
-                            <span class="tweet-date">· 1j</span>
-                        </div>
-                        <p class="tweet-text">Just had a great day at the park!</p>
-                        <div class="tweet-actions">
-                            <button class="tweet-action-btn" aria-label="Répondre">
-                                <span class="tweet-action-icon">💬</span>
-                                <span class="tweet-action-count">2</span>
+                <article class="carte-tweet">
+                    <section class="avatar-tweet">
+                        <img src="images/avatar-utilisateur.png" alt="Avatar de Joel Nkiere" class="avatar">
+                    </section>
+                    <section class="contenu-tweet">
+                        <header class="en-tete-tweet">
+                            <span class="nom-auteur">Joel Nkiere</span>
+                            <span class="nom-utilisateur">@joelnkiere</span>
+                            <span class="date-tweet">· 1j</span>
+                        </header>
+                        <p class="texte-tweet">Just had a great day at the park!</p>
+                        <nav class="actions-tweet">
+                            <a href="tweet-detail.html" class="bouton-action" aria-label="Répondre">
+                                <span class="icone-action">💬</span>
+                                <span class="compteur-action">2</span>
+                            </a>
+                            <button class="bouton-action" aria-label="Retweeter">
+                                <span class="icone-action">🔄</span>
+                                <span class="compteur-action">8</span>
                             </button>
-                            <button class="tweet-action-btn" aria-label="Retweeter">
-                                <span class="tweet-action-icon">🔄</span>
-                                <span class="tweet-action-count">8</span>
+                            <button class="bouton-action" aria-label="J'aime">
+                                <span class="icone-action">❤️</span>
+                                <span class="compteur-action">15</span>
                             </button>
-                            <button class="tweet-action-btn" aria-label="J'aime">
-                                <span class="tweet-action-icon">❤️</span>
-                                <span class="tweet-action-count">15</span>
+                            <button class="bouton-action" aria-label="Partager">
+                                <span class="icone-action">📤</span>
                             </button>
-                            <button class="tweet-action-btn" aria-label="Partager">
-                                <span class="tweet-action-icon">📤</span>
-                            </button>
-                        </div>
-                    </div>
+                        </nav>
+                    </section>
                 </article>
             </section>
         </main>
-    </div>
+    </section>
 </body>
 
 </html>

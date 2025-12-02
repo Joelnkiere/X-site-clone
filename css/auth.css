@@ -259,7 +259,7 @@ body {
 /* Pied de page */
 .pied-de-page {
     background-color: #000000;
-    border-top: 1px solid #333333;
+    /* border-top: 1px solid #333333; */
     padding: 20px 16px;
     margin-top: auto;
 }

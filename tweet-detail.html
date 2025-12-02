@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détail du tweet - X Clone</title>
+</head>
+
+<body>
+    <section class="conteneur-application">
+        <aside class="barre-laterale">
+            <nav class="menu-navigation">
+                <header class="logo-navigation">
+                    <h1>X</h1>
+                </header>
+                <ul class="liste-navigation">
+                    <li class="element-navigation">
+                        <a href="index.html" class="lien-navigation">Accueil</a>
+                    </li>
+                    <li class="element-navigation">
+                        <a href="profile.html" class="lien-navigation">Profil</a>
+                    </li>
+                    <li class="element-navigation">
+                        <a href="login.html" class="lien-navigation">Déconnexion</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="contenu-principal">
+            <header class="en-tete-timeline">
+                <a href="index.html" class="lien-retour">← Retour</a>
+                <h2>Tweet</h2>
+            </header>
+
+            <article class="carte-tweet-principal">
+                <section class="avatar-tweet">
+                    <img src="images/avatar-utilisateur.png" alt="Avatar de Joel Nkiere" class="avatar">
+                </section>
+                <section class="contenu-tweet">
+                    <header class="en-tete-tweet">
+                        <span class="nom-auteur">Joel Nkiere</span>
+                        <span class="nom-utilisateur">@joelnkiere</span>
+                        <span class="date-tweet">· 2h</span>
+                    </header>
+                    <p class="texte-tweet">Hello, this is my first tweet! This is a longer tweet to show how it looks
+                        when displayed in detail view.</p>
+
+                    <section class="medias-tweet">
+                        <img src="images/image-tweet.jpg" alt="Image du tweet" class="image-tweet">
+                    </section>
+
+                    <footer class="pied-tweet">
+                        <time class="date-complete" datetime="2023-10-01T12:00:00Z">12:00 · 1 oct. 2023</time>
+                    </footer>
+
+                    <nav class="actions-tweet">
+                        <button class="bouton-action" aria-label="Répondre">
+                            <span class="icone-action">💬</span>
+                            <span class="compteur-action">5</span>
+                        </button>
+                        <button class="bouton-action" aria-label="Retweeter">
+                            <span class="icone-action">🔄</span>
+                            <span class="compteur-action">10</span>
+                        </button>
+                        <button class="bouton-action" aria-label="J'aime">
+                            <span class="icone-action">❤️</span>
+                            <span class="compteur-action">20</span>
+                        </button>
+                        <button class="bouton-action" aria-label="Partager">
+                            <span class="icone-action">📤</span>
+                        </button>
+                    </nav>
+                </section>
+            </article>
+
+            <section class="section-reponses">
+                <header class="en-tete-reponses">
+                    <h3>Réponses</h3>
+                </header>
+
+                <article class="carte-tweet">
+                    <section class="avatar-tweet">
+                        <img src="images/avatar-utilisateur.png" alt="Avatar de Rolly Nkiere" class="avatar">
+                    </section>
+                    <section class="contenu-tweet">
+                        <header class="en-tete-tweet">
+                            <span class="nom-auteur">Rolly Nkiere</span>
+                            <span class="nom-utilisateur">@rollynkiere</span>
+                            <span class="date-tweet">· 1h</span>
+                        </header>
+                        <p class="texte-tweet">@joelnkiere Welcome to Twitter! Great first tweet!</p>
+                        <nav class="actions-tweet">
+                            <button class="bouton-action" aria-label="Répondre">
+                                <span class="icone-action">💬</span>
+                                <span class="compteur-action">2</span>
+                            </button>
+                            <button class="bouton-action" aria-label="Retweeter">
+                                <span class="icone-action">🔄</span>
+                                <span class="compteur-action">1</span>
+                            </button>
+                            <button class="bouton-action" aria-label="J'aime">
+                                <span class="icone-action">❤️</span>
+                                <span class="compteur-action">5</span>
+                            </button>
+                            <button class="bouton-action" aria-label="Partager">
+                                <span class="icone-action">📤</span>
+                            </button>
+                        </nav>
+                    </section>
+                </article>
+
+                <article class="carte-tweet">
+                    <section class="avatar-tweet">
+                        <img src="images/avatar-utilisateur.png" alt="Avatar de Sacré Mbiku" class="avatar">
+                    </section>
+                    <section class="contenu-tweet">
+                        <header class="en-tete-tweet">
+                            <span class="nom-auteur">Sacré Mbiku/span>
+                                <span class="nom-utilisateur">@sacre mbiku</span>
+                                <span class="date-tweet">· 30min</span>
+                        </header>
+                        <p class="texte-tweet">@joelnkiere Nice! Looking forward to more content from you.</p>
+                        <nav class="actions-tweet">
+                            <button class="bouton-action" aria-label="Répondre">
+                                <span class="icone-action">💬</span>
+                                <span class="compteur-action">0</span>
+                            </button>
+                            <button class="bouton-action" aria-label="Retweeter">
+                                <span class="icone-action">🔄</span>
+                                <span class="compteur-action">0</span>
+                            </button>
+                            <button class="bouton-action" aria-label="J'aime">
+                                <span class="icone-action">❤️</span>
+                                <span class="compteur-action">3</span>
+                            </button>
+                            <button class="bouton-action" aria-label="Partager">
+                                <span class="icone-action">📤</span>
+                            </button>
+                        </nav>
+                    </section>
+                </article>
+            </section>
+
+            <section class="section-formulaire-reponse">
+                <form class="formulaire-tweet" id="formulaireReponse">
+                    <section class="contenu-formulaire-tweet">
+                        <section class="avatar-formulaire-tweet">
+                            <img src="images/avatar-utilisateur.png" alt="Votre avatar" class="avatar">
+                        </section>
+                        <section class="champs-formulaire-tweet">
+                            <textarea id="contenuReponse" class="zone-texte-tweet" placeholder="Tweetez votre réponse"
+                                maxlength="280" rows="4"></textarea>
+                            <footer class="pied-formulaire-tweet">
+                                <span class="compteur-caracteres">
+                                    <span id="compteurCaracteres">0</span>/280
+                                </span>
+                                <button type="submit" class="bouton-tweeter">Répondre</button>
+                            </footer>
+                        </section>
+                    </section>
+                </form>
+            </section>
+        </main>
+    </section>
+</body>
+
+</html>
