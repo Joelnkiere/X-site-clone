@@ -1,0 +1,615 @@
+/* Reset et styles de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+/* Conteneur principal de l'application */
+.conteneur-application {
+    display: flex;
+    min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Barre latérale */
+.barre-laterale {
+    width: 275px;
+    min-height: 100vh;
+    padding: 0 8px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.menu-navigation {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 8px 0;
+}
+
+.logo-navigation {
+    padding: 12px;
+    margin-bottom: 4px;
+}
+
+.logo-navigation h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.liste-navigation {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.element-navigation {
+    display: flex;
+}
+
+.lien-navigation {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 24px;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.lien-navigation:hover {
+    background-color: #181818;
+}
+
+.lien-navigation.actif {
+    color: #ffffff;
+}
+
+/* Contenu principal */
+.contenu-principal {
+    flex: 1;
+    border-left: 1px solid #2f3336;
+    border-right: 1px solid #2f3336;
+    min-height: 100vh;
+}
+
+/* En-tête de la timeline */
+.en-tete-timeline {
+    position: sticky;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(12px);
+    padding: 12px 16px;
+    border-bottom: 1px solid #2f3336;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.en-tete-timeline h2 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.lien-retour {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 20px;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+}
+
+.lien-retour:hover {
+    background-color: #181818;
+}
+
+/* Formulaire de tweet */
+.section-formulaire-tweet {
+    padding: 16px;
+    border-bottom: 1px solid #2f3336;
+}
+
+.formulaire-tweet {
+    width: 100%;
+}
+
+.contenu-formulaire-tweet {
+    display: flex;
+    gap: 12px;
+}
+
+.avatar-formulaire-tweet {
+    flex-shrink: 0;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.champs-formulaire-tweet {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.zone-texte-tweet {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 20px;
+    resize: none;
+    outline: none;
+    font-family: inherit;
+    padding: 12px 0;
+    min-height: 120px;
+}
+
+.zone-texte-tweet::placeholder {
+    color: #71767b;
+}
+
+.pied-formulaire-tweet {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+}
+
+.compteur-caracteres {
+    font-size: 15px;
+    color: #71767b;
+}
+
+.bouton-tweeter {
+    padding: 10px 24px;
+    background-color: #1d9bf0;
+    color: #ffffff;
+    border: none;
+    border-radius: 24px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.bouton-tweeter:hover {
+    background-color: #1a8cd8;
+}
+
+.bouton-tweeter:disabled {
+    background-color: #1d9bf0;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.bouton-tweeter:disabled:hover {
+    background-color: #1d9bf0;
+}
+
+/* Timeline */
+.timeline {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Carte de tweet */
+.carte-tweet {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid #2f3336;
+    transition: background-color 0.2s;
+}
+
+.carte-tweet:hover {
+    background-color: #080808;
+}
+
+.avatar-tweet {
+    flex-shrink: 0;
+}
+
+.contenu-tweet {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.en-tete-tweet {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.nom-auteur {
+    font-weight: 700;
+    font-size: 15px;
+    color: #ffffff;
+}
+
+.nom-utilisateur {
+    font-size: 15px;
+    color: #71767b;
+}
+
+.date-tweet {
+    font-size: 15px;
+    color: #71767b;
+}
+
+.texte-tweet {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #ffffff;
+    word-wrap: break-word;
+}
+
+/* Actions de tweet */
+.actions-tweet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 425px;
+    margin-top: 4px;
+}
+
+.bouton-action {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: #71767b;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.bouton-action:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+.icone-action {
+    font-size: 18px;
+}
+
+.compteur-action {
+    font-size: 13px;
+}
+
+/* Page de profil */
+.en-tete-profil {
+    border-bottom: 1px solid #2f3336;
+}
+
+.banniere-profil {
+    width: 100%;
+    height: 200px;
+    background-color: #333639;
+    overflow: hidden;
+}
+
+.image-banniere {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.informations-profil {
+    padding: 12px 16px;
+    position: relative;
+}
+
+.section-avatar-profil {
+    position: absolute;
+    top: -70px;
+    left: 16px;
+}
+
+.avatar-profil {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 4px solid #000000;
+    object-fit: cover;
+}
+
+.details-profil {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.nom-profil {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.nom-utilisateur-profil {
+    font-size: 15px;
+    color: #71767b;
+}
+
+.bio-profil {
+    font-size: 15px;
+    color: #ffffff;
+    line-height: 1.5;
+}
+
+.meta-profil {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 15px;
+    color: #71767b;
+}
+
+.localisation-profil,
+.site-web-profil,
+.date-creation-profil {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.lien-site-web {
+    color: #1d9bf0;
+    text-decoration: none;
+}
+
+.lien-site-web:hover {
+    text-decoration: underline;
+}
+
+.statistiques-profil {
+    display: flex;
+    gap: 20px;
+    font-size: 15px;
+    color: #71767b;
+}
+
+.element-statistique {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.element-statistique:hover {
+    color: #ffffff;
+}
+
+.element-statistique strong {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* Navigation du profil */
+.navigation-profil {
+    border-bottom: 1px solid #2f3336;
+}
+
+.liste-navigation-profil {
+    display: flex;
+    list-style: none;
+    overflow-x: auto;
+}
+
+.element-navigation-profil {
+    flex: 1;
+    min-width: fit-content;
+}
+
+.lien-navigation-profil {
+    display: block;
+    padding: 16px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #71767b;
+    text-decoration: none;
+    text-align: center;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.lien-navigation-profil:hover {
+    background-color: #181818;
+    color: #ffffff;
+}
+
+.lien-navigation-profil.actif {
+    color: #ffffff;
+    border-bottom-color: #1d9bf0;
+}
+
+.tweets-profil {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Page de détail du tweet */
+.carte-tweet-principal {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid #2f3336;
+}
+
+.medias-tweet {
+    margin-top: 12px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.image-tweet {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 16px;
+    object-fit: cover;
+}
+
+.pied-tweet {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #2f3336;
+}
+
+.date-complete {
+    font-size: 15px;
+    color: #71767b;
+}
+
+/* Section des réponses */
+.section-reponses {
+    border-top: 1px solid #2f3336;
+}
+
+.en-tete-reponses {
+    padding: 16px;
+    border-bottom: 1px solid #2f3336;
+}
+
+.en-tete-reponses h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.section-formulaire-reponse {
+    padding: 16px;
+    border-bottom: 1px solid #2f3336;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .barre-laterale {
+        width: 88px;
+    }
+
+    .logo-navigation h1 {
+        font-size: 24px;
+    }
+
+    .lien-navigation {
+        justify-content: center;
+        padding: 12px;
+    }
+
+    .lien-navigation span {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .conteneur-application {
+        flex-direction: column;
+    }
+
+    .barre-laterale {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        border-top: 1px solid #2f3336;
+        background-color: #000000;
+        z-index: 100;
+    }
+
+    .menu-navigation {
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 8px 0;
+    }
+
+    .logo-navigation {
+        display: none;
+    }
+
+    .liste-navigation {
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    .lien-navigation {
+        flex-direction: column;
+        gap: 4px;
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .contenu-principal {
+        margin-bottom: 60px;
+    }
+
+    .avatar-profil {
+        width: 100px;
+        height: 100px;
+    }
+
+    .section-avatar-profil {
+        top: -50px;
+    }
+
+    .details-profil {
+        margin-top: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .banniere-profil {
+        height: 150px;
+    }
+
+    .avatar-profil {
+        width: 80px;
+        height: 80px;
+    }
+
+    .section-avatar-profil {
+        top: -40px;
+    }
+
+    .details-profil {
+        margin-top: 50px;
+    }
+
+    .statistiques-profil {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
