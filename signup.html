@@ -80,6 +80,15 @@
         </nav>
         <p class="copyright-pied">© 2025 X Corp.</p>
     </footer>
+    <script src="js/auth.js"></script>
+    <script>
+        // Rediriger si l'utilisateur est déjà connecté
+        document.addEventListener('DOMContentLoaded', function() {
+            if (AuthService.isAuthenticated()) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
 </body>
 
 </html>

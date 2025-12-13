@@ -23,7 +23,7 @@
                         <a href="profile.html" class="lien-navigation">Profil</a>
                     </li>
                     <li class="element-navigation">
-                        <a href="login.html" class="lien-navigation">Déconnexion</a>
+                        <a href="#" id="logoutLink" class="lien-navigation">Déconnexion</a>
                     </li>
                 </ul>
             </nav>
@@ -119,7 +119,25 @@
             </section>
         </main>
     </section>
+    <script src="js/auth.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        // Protection de la route - vérifier si l'utilisateur est connecté
+        document.addEventListener('DOMContentLoaded', function () {
+            if (!AuthService.isAuthenticated()) {
+                window.location.href = 'login.html';
+            }
+
+            // Gérer la déconnexion
+            const logoutLink = document.getElementById('logoutLink');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    AuthService.logout();
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -43,8 +43,7 @@
                             placeholder="Numéro de téléphone, adresse email ou nom d'utilisateur" required>
                     </fieldset>
 
-                    <button type="submit" class="bouton-principal"
-                        onclick="event.preventDefault(); window.location.href='login-password.html'">Suivant</button>
+                    <button type="submit" class="bouton-principal">Suivant</button>
                 </form>
 
                 <nav class="liens-formulaire">
@@ -58,6 +57,15 @@
             </main>
         </article>
     </section>
+    <script src="js/auth.js"></script>
+    <script>
+        // Rediriger si l'utilisateur est déjà connecté
+        document.addEventListener('DOMContentLoaded', function() {
+            if (AuthService.isAuthenticated()) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
 </body>
 
 </html>
