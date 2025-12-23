@@ -23,7 +23,7 @@
                         <a href="profile.html" class="lien-navigation">Profil</a>
                     </li>
                     <li class="element-navigation">
-                        <a href="login.html" class="lien-navigation">Déconnexion</a>
+                        <a href="#" id="logoutLink" class="lien-navigation">Déconnexion</a>
                     </li>
                 </ul>
             </nav>
@@ -80,68 +80,7 @@
                 <header class="en-tete-reponses">
                     <h3>Réponses</h3>
                 </header>
-
-                <article class="carte-tweet">
-                    <section class="avatar-tweet">
-                        <img src="images/user-avatar.png" alt="Avatar de Rolly Nkiere" class="avatar">
-                    </section>
-                    <section class="contenu-tweet">
-                        <header class="en-tete-tweet">
-                            <span class="nom-auteur">Rolly Nkiere</span>
-                            <span class="nom-utilisateur">@rollynkiere</span>
-                            <span class="date-tweet">· 1h</span>
-                        </header>
-                        <p class="texte-tweet">@joelnkiere Welcome to Twitter! Great first tweet!</p>
-                        <nav class="actions-tweet">
-                            <button class="bouton-action" aria-label="Répondre">
-                                <span class="icone-action">💬</span>
-                                <span class="compteur-action">2</span>
-                            </button>
-                            <button class="bouton-action" aria-label="Retweeter">
-                                <span class="icone-action">🔄</span>
-                                <span class="compteur-action">1</span>
-                            </button>
-                            <button class="bouton-action" aria-label="J'aime">
-                                <span class="icone-action">❤️</span>
-                                <span class="compteur-action">5</span>
-                            </button>
-                            <button class="bouton-action" aria-label="Partager">
-                                <span class="icone-action">📤</span>
-                            </button>
-                        </nav>
-                    </section>
-                </article>
-
-                <article class="carte-tweet">
-                    <section class="avatar-tweet">
-                        <img src="images/user-avatar.png" alt="Avatar de Sacré Mbiku" class="avatar">
-                    </section>
-                    <section class="contenu-tweet">
-                        <header class="en-tete-tweet">
-                            <span class="nom-auteur">Sacré Mbiku</span>
-                            <span class="nom-utilisateur">@sacrembiku</span>
-                            <span class="date-tweet">· 30min</span>
-                        </header>
-                        <p class="texte-tweet">@joelnkiere Nice! Looking forward to more content from you.</p>
-                        <nav class="actions-tweet">
-                            <button class="bouton-action" aria-label="Répondre">
-                                <span class="icone-action">💬</span>
-                                <span class="compteur-action">0</span>
-                            </button>
-                            <button class="bouton-action" aria-label="Retweeter">
-                                <span class="icone-action">🔄</span>
-                                <span class="compteur-action">0</span>
-                            </button>
-                            <button class="bouton-action" aria-label="J'aime">
-                                <span class="icone-action">❤️</span>
-                                <span class="compteur-action">3</span>
-                            </button>
-                            <button class="bouton-action" aria-label="Partager">
-                                <span class="icone-action">📤</span>
-                            </button>
-                        </nav>
-                    </section>
-                </article>
+                <!-- Les réponses seront chargées dynamiquement ici -->
             </section>
 
             <section class="section-formulaire-reponse">
@@ -165,7 +104,26 @@
             </section>
         </main>
     </section>
+    <script src="js/auth.js"></script>
+    <script src="js/tweets.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        // Protection de la route - vérifier si l'utilisateur est connecté
+        document.addEventListener('DOMContentLoaded', function () {
+            if (!AuthService.isAuthenticated()) {
+                window.location.href = 'login.html';
+            }
+
+            // Gérer la déconnexion
+            const logoutLink = document.getElementById('logoutLink');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    AuthService.logout();
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

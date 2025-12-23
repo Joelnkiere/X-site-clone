@@ -41,7 +41,7 @@
                     <section class="details-profil">
                         <h1 class="nom-profil">Joel Nkiere</h1>
                         <p class="nom-utilisateur-profil">@joelnkiere</p>
-                        <p class="bio-profil">Passionate about coding and open source.</p>
+                        <p class="bio-profil">Développeur passionné par le web et les API.</p>
                         <section class="meta-profil">
                             <span class="localisation-profil">📍 Kinshasa, DRC</span>
                             <span class="site-web-profil">🔗 <a href="https://joelnkiere.com"
@@ -78,71 +78,13 @@
             </nav>
 
             <section class="tweets-profil" id="tweets">
-                <article class="carte-tweet">
-                    <section class="avatar-tweet">
-                        <img src="images/user-avatar.png" alt="Avatar de Joel Nkiere" class="avatar">
-                    </section>
-                    <section class="contenu-tweet">
-                        <header class="en-tete-tweet">
-                            <span class="nom-auteur">Joel Nkiere</span>
-                            <span class="nom-utilisateur">@joelnkiere</span>
-                            <span class="date-tweet">· 2h</span>
-                        </header>
-                        <p class="texte-tweet">Hello, this is my first tweet!</p>
-                        <nav class="actions-tweet">
-                            <a href="tweet-detail.html" class="bouton-action" aria-label="Répondre">
-                                <span class="icone-action">💬</span>
-                                <span class="compteur-action">5</span>
-                            </a>
-                            <button class="bouton-action" aria-label="Retweeter">
-                                <span class="icone-action">🔄</span>
-                                <span class="compteur-action">10</span>
-                            </button>
-                            <button class="bouton-action" aria-label="J'aime">
-                                <span class="icone-action">❤️</span>
-                                <span class="compteur-action">20</span>
-                            </button>
-                            <button class="bouton-action" aria-label="Partager">
-                                <span class="icone-action">📤</span>
-                            </button>
-                        </nav>
-                    </section>
-                </article>
-
-                <article class="carte-tweet">
-                    <section class="avatar-tweet">
-                        <img src="images/avatar-utilisateur.png" alt="Avatar de Joel Nkiere" class="avatar">
-                    </section>
-                    <section class="contenu-tweet">
-                        <header class="en-tete-tweet">
-                            <span class="nom-auteur">Joel Nkiere</span>
-                            <span class="nom-utilisateur">@joelnkiere</span>
-                            <span class="date-tweet">· 1j</span>
-                        </header>
-                        <p class="texte-tweet">Just had a great day at the park!</p>
-                        <nav class="actions-tweet">
-                            <a href="tweet-detail.html" class="bouton-action" aria-label="Répondre">
-                                <span class="icone-action">💬</span>
-                                <span class="compteur-action">2</span>
-                            </a>
-                            <button class="bouton-action" aria-label="Retweeter">
-                                <span class="icone-action">🔄</span>
-                                <span class="compteur-action">8</span>
-                            </button>
-                            <button class="bouton-action" aria-label="J'aime">
-                                <span class="icone-action">❤️</span>
-                                <span class="compteur-action">15</span>
-                            </button>
-                            <button class="bouton-action" aria-label="Partager">
-                                <span class="icone-action">📤</span>
-                            </button>
-                        </nav>
-                    </section>
-                </article>
+                <!-- Les tweets seront chargés dynamiquement ici -->
             </section>
         </main>
     </section>
     <script src="js/auth.js"></script>
+    <script src="js/tweets.js"></script>
+    <script src="js/profile.js"></script>
     <script>
         // Protection de la route - vérifier si l'utilisateur est connecté
         document.addEventListener('DOMContentLoaded', function () {

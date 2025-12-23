@@ -310,6 +310,24 @@ body {
     font-size: 13px;
 }
 
+/* Bouton de suppression de tweet */
+.bouton-supprimer-tweet {
+    background: none;
+    border: none;
+    color: #71767b;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    margin-left: auto;
+}
+
+.bouton-supprimer-tweet:hover {
+    background-color: rgba(244, 33, 46, 0.1);
+    color: #f4212e;
+}
+
 /* Page de profil */
 .en-tete-profil {
     border-bottom: 1px solid #2f3336;
