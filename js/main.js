@@ -1,19 +1,21 @@
 // ============================================
-// GESTION DES TWEETS - INDEX.HTML
+// SCRIPT PRINCIPAL - INDEX.HTML
 // ============================================
 
 document.addEventListener('DOMContentLoaded', async function () {
-    // Vérifier que l'utilisateur est connecté
-    if (!AuthService || !AuthService.isAuthenticated()) {
-        return;
+    // Récupérer l'utilisateur connecté (peut être null)
+    let currentUser = null;
+    if (typeof getCurrentUser === 'function') {
+        currentUser = getCurrentUser();
     }
 
-    const currentUser = AuthService.getCurrentUser();
     const timeline = document.querySelector('.timeline');
     const formulaireTweet = document.getElementById('formulaireTweet');
     const contenuTweet = document.getElementById('contenuTweet');
     const compteurCaracteres = document.getElementById('compteurCaracteres');
     const boutonTweeter = document.querySelector('.bouton-tweeter');
+    const boutonImage = document.getElementById('boutonImage');
+    const inputImage = document.getElementById('inputImage');
 
     // Compteur de caractères
     if (contenuTweet && compteurCaracteres) {
@@ -21,73 +23,109 @@ document.addEventListener('DOMContentLoaded', async function () {
             const longueur = contenuTweet.value.length;
             compteurCaracteres.textContent = longueur;
 
-            // Changer la couleur si on approche de la limite
+            // Changer la couleur selon la longueur
+            const parent = compteurCaracteres.parentElement;
             if (longueur > 260) {
-                compteurCaracteres.parentElement.style.color = '#f4212e';
+                parent.style.color = '#f4212e';
             } else if (longueur > 240) {
-                compteurCaracteres.parentElement.style.color = '#ffd400';
+                parent.style.color = '#ffd400';
             } else {
-                compteurCaracteres.parentElement.style.color = '#71767b';
+                parent.style.color = '#71767b';
             }
 
-            // Désactiver le bouton si le tweet est vide ou trop long
+            // Activer/désactiver le bouton
             if (boutonTweeter) {
-                if (longueur === 0 || longueur > 280) {
-                    boutonTweeter.disabled = true;
-                } else {
-                    boutonTweeter.disabled = false;
-                }
+                boutonTweeter.disabled = longueur === 0 && !selectedImage;
             }
         });
     }
 
-    // Mettre à jour l'avatar du formulaire
-    const avatarFormulaire = document.querySelector('.avatar-formulaire-tweet img');
-    if (avatarFormulaire && currentUser) {
-        avatarFormulaire.src = currentUser.profilePicture || 'images/user-avatar.png';
-        avatarFormulaire.alt = `Avatar de ${currentUser.name}`;
+    // Gestion de l'upload d'image
+    if (boutonImage && inputImage) {
+        boutonImage.addEventListener('click', function () {
+            inputImage.click();
+        });
+
+        inputImage.addEventListener('change', async function () {
+            const file = this.files[0];
+            if (file) {
+                // Vérifier le type de fichier
+                if (!file.type.startsWith('image/')) {
+                    showMessage('Veuillez sélectionner une image', 'erreur');
+                    return;
+                }
+
+                // Vérifier la taille (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    showMessage('L\'image ne doit pas dépasser 5MB', 'erreur');
+                    return;
+                }
+
+                try {
+                    const base64 = await convertImageToBase64(file);
+                    selectedImage = base64;
+                    showImagePreview(base64);
+
+                    // Activer le bouton si une image est sélectionnée
+                    if (boutonTweeter) {
+                        boutonTweeter.disabled = false;
+                    }
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    showMessage('Erreur lors du chargement de l\'image', 'erreur');
+                }
+            }
+        });
     }
 
     // Charger et afficher les tweets
     async function loadTweets() {
         if (!timeline) return;
 
-        timeline.innerHTML = '<p style="text-align: center; padding: 20px; color: #71767b;">Chargement des tweets...</p>';
+        timeline.innerHTML = '<section class="chargement"><div class="spinner"></div><p>Chargement...</p></section>';
 
         try {
-            const tweets = await TweetService.getTweets();
-            const users = await TweetService.getUsers();
+            // Récupérer les tweets et les utilisateurs
+            const tweets = await getTweets();
+            const users = await getUsers();
+
+            // Créer un dictionnaire des utilisateurs
             const usersMap = {};
-            users.forEach(u => usersMap[u.id] = u);
+            for (let i = 0; i < users.length; i++) {
+                usersMap[users[i].id] = users[i];
+            }
 
             timeline.innerHTML = '';
 
-            if (tweets.length === 0) {
-                timeline.innerHTML = '<p style="text-align: center; padding: 20px; color: #71767b;">Aucun tweet pour le moment. Soyez le premier à tweeter !</p>';
-                return;
-            }
-
             // Filtrer les tweets principaux (pas les réponses)
-            const mainTweets = tweets.filter(t => !t.replyTo);
+            const mainTweets = [];
+            for (let i = 0; i < tweets.length; i++) {
+                if (!tweets[i].replyTo) {
+                    mainTweets.push(tweets[i]);
+                }
+            }
 
             if (mainTweets.length === 0) {
-                timeline.innerHTML = '<p style="text-align: center; padding: 20px; color: #71767b;">Aucun tweet pour le moment.</p>';
+                timeline.innerHTML = '<p style="text-align: center; padding: 32px; color: #71767b;">Aucun tweet pour le moment. Soyez le premier à tweeter !</p>';
                 return;
             }
 
-            mainTweets.forEach(tweet => {
+            // Afficher les tweets (les plus récents sont déjà en premier grâce au tri de l'API)
+            for (let i = 0; i < mainTweets.length; i++) {
+                const tweet = mainTweets[i];
                 const user = usersMap[tweet.userId];
                 if (user) {
-                    const tweetElement = TweetService.createTweetElement(tweet, user, currentUser.id);
+                    const tweetElement = createTweetHTML(tweet, user, currentUser ? currentUser.id : null);
                     timeline.appendChild(tweetElement);
                 }
-            });
+            }
 
-            // Ajouter les gestionnaires d'événements pour les actions
+            // Attacher les gestionnaires d'événements
             attachTweetEventHandlers();
+
         } catch (error) {
-            console.error('Erreur lors du chargement des tweets:', error);
-            timeline.innerHTML = '<p style="text-align: center; padding: 20px; color: #f4212e;">Erreur lors du chargement des tweets. Vérifiez que le serveur est démarré.</p>';
+            console.error('Erreur:', error);
+            timeline.innerHTML = '<p style="text-align: center; padding: 32px; color: #f4212e;">Erreur de chargement. Vérifiez que le serveur est démarré (npm run server).</p>';
         }
     }
 
@@ -98,13 +136,14 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             const content = contenuTweet.value.trim();
 
-            if (!content || content.length === 0 || content.length > 280) {
-                TweetService.showError('Le tweet doit contenir entre 1 et 280 caractères.');
+            // Vérifier qu'il y a du contenu ou une image
+            if (!content && !selectedImage) {
+                showMessage('Ajoutez du texte ou une image', 'erreur');
                 return;
             }
 
-            if (!currentUser) {
-                TweetService.showError('Vous devez être connecté pour tweeter.');
+            if (content.length > 280) {
+                showMessage('Le tweet ne peut pas dépasser 280 caractères', 'erreur');
                 return;
             }
 
@@ -112,91 +151,149 @@ document.addEventListener('DOMContentLoaded', async function () {
                 boutonTweeter.disabled = true;
                 boutonTweeter.textContent = 'Publication...';
 
-                await TweetService.createTweet({
-                    userId: currentUser.id,
-                    content: content,
-                    media: []
-                });
+                // Préparer les médias
+                const mediaList = [];
+                if (selectedImage) {
+                    mediaList.push({
+                        type: 'image',
+                        url: selectedImage
+                    });
+                }
 
-                contenuTweet.value = '';
-                compteurCaracteres.textContent = '0';
-                compteurCaracteres.parentElement.style.color = '#71767b';
-                boutonTweeter.disabled = true;
+                // Créer le tweet (utiliser l'ID de l'utilisateur connecté ou "1" par défaut)
+                const userId = currentUser ? currentUser.id : '1';
+                const newTweet = await createTweet(userId, content, mediaList, null);
 
-                TweetService.showSuccess('Tweet publié avec succès !');
+                if (newTweet) {
+                    // Réinitialiser le formulaire
+                    contenuTweet.value = '';
+                    compteurCaracteres.textContent = '0';
+                    compteurCaracteres.parentElement.style.color = '#71767b';
+                    removeImagePreview();
+                    boutonTweeter.disabled = true;
 
-                // Recharger les tweets
-                await loadTweets();
+                    showMessage('Tweet publié !', 'succes');
+
+                    // Recharger les tweets pour afficher le nouveau en haut
+                    await loadTweets();
+                } else {
+                    showMessage('Erreur lors de la publication', 'erreur');
+                }
+
             } catch (error) {
-                console.error('Erreur lors de la création du tweet:', error);
-                TweetService.showError('Erreur lors de la publication du tweet.');
+                console.error('Erreur:', error);
+                showMessage('Erreur lors de la publication', 'erreur');
             } finally {
-                boutonTweeter.disabled = false;
-                boutonTweeter.textContent = 'Tweeter';
+                boutonTweeter.textContent = 'Poster';
             }
         });
     }
 
-    // Attacher les gestionnaires d'événements pour les actions de tweets
+    // Attacher les gestionnaires d'événements aux tweets
     function attachTweetEventHandlers() {
-        // Likes
-        document.querySelectorAll('.bouton-like').forEach(btn => {
-            btn.addEventListener('click', async function () {
-                const tweetId = parseInt(this.dataset.tweetId);
-                const compteur = this.querySelector('.compteur-like');
-                const currentLikes = parseInt(compteur.textContent) || 0;
+        // Boutons Like
+        const boutonLikes = document.querySelectorAll('.bouton-like');
+        for (let i = 0; i < boutonLikes.length; i++) {
+            boutonLikes[i].addEventListener('click', async function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const tweetId = this.getAttribute('data-tweet-id');
+                await toggleLike(tweetId, this);
+            });
+        }
 
-                try {
-                    await TweetService.updateTweet(tweetId, {
-                        likes: currentLikes + 1
-                    });
-                    compteur.textContent = currentLikes + 1;
-                } catch (error) {
-                    console.error('Erreur lors du like:', error);
+        // Boutons Retweet
+        const boutonRetweets = document.querySelectorAll('.bouton-retweet');
+        for (let i = 0; i < boutonRetweets.length; i++) {
+            boutonRetweets[i].addEventListener('click', async function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const tweetId = this.getAttribute('data-tweet-id');
+                await toggleRetweet(tweetId, this);
+            });
+        }
+
+        // Boutons Bookmark
+        const boutonBookmarks = document.querySelectorAll('.bouton-bookmark');
+        for (let i = 0; i < boutonBookmarks.length; i++) {
+            boutonBookmarks[i].addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const tweetId = this.getAttribute('data-tweet-id');
+                toggleBookmark(tweetId, this);
+            });
+        }
+
+        // Boutons Supprimer
+        const boutonSupprimer = document.querySelectorAll('.bouton-supprimer-tweet');
+        for (let i = 0; i < boutonSupprimer.length; i++) {
+            boutonSupprimer[i].addEventListener('click', async function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                if (!confirm('Supprimer ce tweet ?')) return;
+
+                const tweetId = this.getAttribute('data-tweet-id');
+                const success = await deleteTweet(tweetId);
+
+                if (success) {
+                    showMessage('Tweet supprimé !', 'succes');
+                    await loadTweets();
+                } else {
+                    showMessage('Erreur lors de la suppression', 'erreur');
                 }
             });
-        });
+        }
 
-        // Retweets
-        document.querySelectorAll('.bouton-retweet').forEach(btn => {
-            btn.addEventListener('click', async function () {
-                const tweetId = parseInt(this.dataset.tweetId);
-                const compteur = this.querySelector('.compteur-retweet');
-                const currentRetweets = parseInt(compteur.textContent) || 0;
+        // Boutons Partager
+        const boutonPartager = document.querySelectorAll('.bouton-partager');
+        for (let i = 0; i < boutonPartager.length; i++) {
+            boutonPartager[i].addEventListener('click', async function (e) {
+                e.preventDefault();
+                e.stopPropagation();
 
-                try {
-                    await TweetService.updateTweet(tweetId, {
-                        retweets: currentRetweets + 1
-                    });
-                    compteur.textContent = currentRetweets + 1;
-                } catch (error) {
-                    console.error('Erreur lors du retweet:', error);
-                }
-            });
-        });
+                const tweetId = this.getAttribute('data-tweet-id');
+                const url = window.location.origin + '/tweet-detail.html?id=' + tweetId;
 
-        // Suppression de tweets
-        document.querySelectorAll('.bouton-supprimer-tweet').forEach(btn => {
-            btn.addEventListener('click', async function () {
-                if (!confirm('Êtes-vous sûr de vouloir supprimer ce tweet ?')) {
-                    return;
-                }
-
-                const tweetId = parseInt(this.dataset.tweetId);
-
-                try {
-                    const success = await TweetService.deleteTweet(tweetId);
-                    if (success) {
-                        TweetService.showSuccess('Tweet supprimé avec succès !');
-                        await loadTweets();
-                    } else {
-                        TweetService.showError('Erreur lors de la suppression du tweet.');
+                if (navigator.share) {
+                    try {
+                        await navigator.share({ url: url });
+                    } catch (err) {
+                        // Partage annulé
                     }
-                } catch (error) {
-                    console.error('Erreur lors de la suppression:', error);
-                    TweetService.showError('Erreur lors de la suppression du tweet.');
+                } else if (navigator.clipboard) {
+                    await navigator.clipboard.writeText(url);
+                    showMessage('Lien copié !', 'succes');
                 }
             });
+        }
+    }
+
+    // Recherche en temps réel
+    const inputRecherche = document.getElementById('inputRecherche');
+    if (inputRecherche) {
+        let timeout;
+        inputRecherche.addEventListener('input', function () {
+            clearTimeout(timeout);
+            const query = this.value.toLowerCase().trim();
+
+            timeout = setTimeout(function () {
+                const tweets = document.querySelectorAll('.carte-tweet');
+                for (let i = 0; i < tweets.length; i++) {
+                    const tweet = tweets[i];
+                    const texte = tweet.querySelector('.texte-tweet');
+                    const auteur = tweet.querySelector('.nom-auteur');
+
+                    const texteContenu = texte ? texte.textContent.toLowerCase() : '';
+                    const auteurContenu = auteur ? auteur.textContent.toLowerCase() : '';
+
+                    if (query === '' || texteContenu.indexOf(query) !== -1 || auteurContenu.indexOf(query) !== -1) {
+                        tweet.style.display = 'flex';
+                    } else {
+                        tweet.style.display = 'none';
+                    }
+                }
+            }, 300);
         });
     }
 
@@ -205,28 +302,29 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 // ============================================
-// GESTION DES RÉPONSES - TWEET-DETAIL.HTML
+// SCRIPT POUR TWEET-DETAIL.HTML
 // ============================================
 
 document.addEventListener('DOMContentLoaded', async function () {
-    // Vérifier que l'utilisateur est connecté
-    if (!AuthService || !AuthService.isAuthenticated()) {
-        return;
-    }
-
-    const currentUser = AuthService.getCurrentUser();
+    // Vérifier la page
     const formulaireReponse = document.getElementById('formulaireReponse');
     const contenuReponse = document.getElementById('contenuReponse');
-    const compteurReponse = document.querySelector('#formulaireReponse .compteur-caracteres span');
+
+    if (!formulaireReponse) return; // Pas sur la page tweet-detail
 
     // Récupérer l'ID du tweet depuis l'URL
     const urlParams = new URLSearchParams(window.location.search);
-    const tweetId = parseInt(urlParams.get('id'));
+    const tweetId = urlParams.get('id');
 
-    if (!tweetId) {
-        window.location.href = 'index.html';
-        return;
+    if (!tweetId) return;
+
+    let currentUser = null;
+    if (typeof getCurrentUser === 'function') {
+        currentUser = getCurrentUser();
     }
+
+    const compteurReponse = document.getElementById('compteurCaracteres');
+    const boutonRepondre = formulaireReponse.querySelector('.bouton-tweeter');
 
     // Compteur de caractères pour les réponses
     if (contenuReponse && compteurReponse) {
@@ -234,95 +332,107 @@ document.addEventListener('DOMContentLoaded', async function () {
             const longueur = contenuReponse.value.length;
             compteurReponse.textContent = longueur;
 
-            // Changer la couleur si on approche de la limite
-            const compteurParent = compteurReponse.parentElement;
             if (longueur > 260) {
-                compteurParent.style.color = '#f4212e';
+                compteurReponse.parentElement.style.color = '#f4212e';
             } else if (longueur > 240) {
-                compteurParent.style.color = '#ffd400';
+                compteurReponse.parentElement.style.color = '#ffd400';
             } else {
-                compteurParent.style.color = '#71767b';
+                compteurReponse.parentElement.style.color = '#71767b';
             }
 
-            // Désactiver le bouton si la réponse est vide ou trop longue
-            const boutonReponse = document.querySelector('#formulaireReponse .bouton-tweeter');
-            if (boutonReponse) {
-                if (longueur === 0 || longueur > 280) {
-                    boutonReponse.disabled = true;
-                } else {
-                    boutonReponse.disabled = false;
-                }
+            if (boutonRepondre) {
+                boutonRepondre.disabled = longueur === 0 || longueur > 280;
             }
         });
     }
 
-    // Charger et afficher le tweet principal
+    // Charger le tweet principal
     async function loadTweetDetail() {
+        const cartePrincipal = document.querySelector('.carte-tweet-principal');
+        if (!cartePrincipal) return;
+
         try {
-            const tweet = await TweetService.getTweetById(tweetId);
+            const tweet = await getTweetById(tweetId);
             if (!tweet) {
-                window.location.href = 'index.html';
+                cartePrincipal.innerHTML = '<p style="padding: 32px; color: #f4212e;">Tweet introuvable</p>';
                 return;
             }
 
-            const user = await TweetService.getUserById(tweet.userId);
-            if (!user) {
-                window.location.href = 'index.html';
-                return;
+            const user = await getUserById(tweet.userId);
+            if (!user) return;
+
+            const avatarUrl = user.profilePicture || 'images/user-avatar.png';
+            const fullDate = formatFullDate(tweet.createdAt);
+            const isOwner = currentUser && (tweet.userId == currentUser.id);
+            const isLiked = isTweetLiked(tweet.id);
+            const isRetweeted = isTweetRetweeted(tweet.id);
+
+            // Créer le HTML des médias
+            let mediaHTML = '';
+            if (tweet.media && tweet.media.length > 0) {
+                mediaHTML = '<section class="medias-tweet">';
+                for (let i = 0; i < tweet.media.length; i++) {
+                    const m = tweet.media[i];
+                    if (m.type === 'image') {
+                        mediaHTML = mediaHTML + '<img src="' + m.url + '" alt="Image" class="image-tweet">';
+                    }
+                }
+                mediaHTML = mediaHTML + '</section>';
             }
 
-            // Afficher le tweet principal
-            const carteTweetPrincipal = document.querySelector('.carte-tweet-principal');
-            if (carteTweetPrincipal) {
-                const avatarUrl = user.profilePicture || 'images/user-avatar.png';
-                const fullDate = TweetService.formatFullDate(tweet.createdAt);
-                const relativeTime = TweetService.formatRelativeTime(tweet.createdAt);
-                const isOwner = currentUser && tweet.userId === currentUser.id;
+            cartePrincipal.innerHTML =
+                '<section class="avatar-tweet">' +
+                '<img src="' + avatarUrl + '" alt="Avatar" class="avatar">' +
+                '</section>' +
+                '<section class="contenu-tweet">' +
+                '<header class="en-tete-tweet">' +
+                '<span class="nom-auteur">' + escapeHtml(user.name) + '</span>' +
+                '<span class="nom-utilisateur">@' + escapeHtml(user.username) + '</span>' +
+                (isOwner ? '<button class="bouton-supprimer-tweet" data-tweet-id="' + tweet.id + '">' + ICON_DELETE + '</button>' : '') +
+                '</header>' +
+                '<p class="texte-tweet">' + formatTweetContent(tweet.content) + '</p>' +
+                mediaHTML +
+                '<footer class="pied-tweet"><time>' + fullDate + '</time></footer>' +
+                '<nav class="actions-tweet">' +
+                '<button class="bouton-action bouton-repondre">' + ICON_REPLY + '<span class="compteur-action">' + (tweet.replies ? tweet.replies.length : 0) + '</span></button>' +
+                '<button class="bouton-action bouton-retweet ' + (isRetweeted ? 'actif' : '') + '" data-tweet-id="' + tweet.id + '">' + ICON_RETWEET + '<span class="compteur-action compteur-retweet">' + (tweet.retweets || 0) + '</span></button>' +
+                '<button class="bouton-action bouton-like ' + (isLiked ? 'actif' : '') + '" data-tweet-id="' + tweet.id + '">' + (isLiked ? ICON_LIKE_FILLED : ICON_LIKE) + '<span class="compteur-action compteur-like">' + (tweet.likes || 0) + '</span></button>' +
+                '<button class="bouton-action bouton-partager" data-tweet-id="' + tweet.id + '">' + ICON_SHARE + '</button>' +
+                '</nav>' +
+                '</section>';
 
-                carteTweetPrincipal.innerHTML = `
-                    <section class="avatar-tweet">
-                        <img src="${avatarUrl}" alt="Avatar de ${user.name}" class="avatar" onerror="this.src='images/user-avatar.png'">
-                    </section>
-                    <section class="contenu-tweet">
-                        <header class="en-tete-tweet">
-                            <span class="nom-auteur">${TweetService.escapeHtml(user.name)}</span>
-                            <span class="nom-utilisateur">@${TweetService.escapeHtml(user.username)}</span>
-                            <span class="date-tweet">· ${relativeTime}</span>
-                            ${isOwner ? `<button class="bouton-supprimer-tweet" data-tweet-id="${tweet.id}" title="Supprimer">🗑️</button>` : ''}
-                        </header>
-                        <p class="texte-tweet">${TweetService.escapeHtml(tweet.content)}</p>
-                        ${tweet.media && tweet.media.length > 0 ? TweetService.createMediaHTML(tweet.media) : ''}
-                        <footer class="pied-tweet">
-                            <time class="date-complete" datetime="${tweet.createdAt}">${fullDate}</time>
-                        </footer>
-                        <nav class="actions-tweet">
-                            <button class="bouton-action" aria-label="Répondre">
-                                <span class="icone-action">💬</span>
-                                <span class="compteur-action">${tweet.replies ? tweet.replies.length : 0}</span>
-                            </button>
-                            <button class="bouton-action bouton-retweet" data-tweet-id="${tweet.id}" aria-label="Retweeter">
-                                <span class="icone-action">🔄</span>
-                                <span class="compteur-action compteur-retweet">${tweet.retweets || 0}</span>
-                            </button>
-                            <button class="bouton-action bouton-like" data-tweet-id="${tweet.id}" aria-label="J'aime">
-                                <span class="icone-action">❤️</span>
-                                <span class="compteur-action compteur-like">${tweet.likes || 0}</span>
-                            </button>
-                            <button class="bouton-action" aria-label="Partager">
-                                <span class="icone-action">📤</span>
-                            </button>
-                        </nav>
-                    </section>
-                `;
+            // Attacher les événements
+            const likeBtn = cartePrincipal.querySelector('.bouton-like');
+            if (likeBtn) {
+                likeBtn.addEventListener('click', async function () {
+                    await toggleLike(tweet.id, this);
+                });
+            }
 
-                // Gestionnaires d'événements pour le tweet principal
-                attachDetailEventHandlers(carteTweetPrincipal);
+            const retweetBtn = cartePrincipal.querySelector('.bouton-retweet');
+            if (retweetBtn) {
+                retweetBtn.addEventListener('click', async function () {
+                    await toggleRetweet(tweet.id, this);
+                });
+            }
+
+            const deleteBtn = cartePrincipal.querySelector('.bouton-supprimer-tweet');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', async function () {
+                    if (confirm('Supprimer ce tweet ?')) {
+                        const success = await deleteTweet(tweet.id);
+                        if (success) {
+                            window.location.href = 'index.html';
+                        }
+                    }
+                });
             }
 
             // Charger les réponses
             await loadReplies();
+
         } catch (error) {
-            console.error('Erreur lors du chargement du tweet:', error);
+            console.error('Erreur:', error);
         }
     }
 
@@ -332,222 +442,104 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (!sectionReponses) return;
 
         try {
-            const replies = await TweetService.getReplies(tweetId);
-            const users = await TweetService.getUsers();
-            const usersMap = {};
-            users.forEach(u => usersMap[u.id] = u);
+            const replies = await getReplies(tweetId);
+            const users = await getUsers();
 
-            // Supprimer les tweets existants (garder le header)
-            const enTeteReponses = sectionReponses.querySelector('.en-tete-reponses');
-            const existingTweets = sectionReponses.querySelectorAll('.carte-tweet');
-            existingTweets.forEach(t => t.remove());
+            const usersMap = {};
+            for (let i = 0; i < users.length; i++) {
+                usersMap[users[i].id] = users[i];
+            }
+
+            // Supprimer les anciennes réponses
+            const anciensElements = sectionReponses.querySelectorAll('.carte-tweet');
+            for (let i = 0; i < anciensElements.length; i++) {
+                anciensElements[i].remove();
+            }
 
             if (replies.length === 0) {
-                const noRepliesMsg = document.createElement('p');
-                noRepliesMsg.style.cssText = 'text-align: center; padding: 20px; color: #71767b;';
-                noRepliesMsg.textContent = 'Aucune réponse pour le moment.';
-                sectionReponses.appendChild(noRepliesMsg);
+                const msg = document.createElement('p');
+                msg.style.cssText = 'text-align: center; padding: 32px; color: #71767b;';
+                msg.textContent = 'Aucune réponse pour le moment.';
+                sectionReponses.appendChild(msg);
                 return;
             }
 
-            replies.forEach(reply => {
+            for (let i = 0; i < replies.length; i++) {
+                const reply = replies[i];
                 const user = usersMap[reply.userId];
                 if (user) {
-                    const replyElement = TweetService.createTweetElement(reply, user, currentUser.id);
+                    const replyElement = createTweetHTML(reply, user, currentUser ? currentUser.id : null);
                     sectionReponses.appendChild(replyElement);
                 }
-            });
+            }
 
-            // Attacher les gestionnaires d'événements pour les réponses
-            attachTweetEventHandlers();
+            // Attacher les événements aux réponses
+            attachReplyEventHandlers(sectionReponses);
+
         } catch (error) {
-            console.error('Erreur lors du chargement des réponses:', error);
+            console.error('Erreur:', error);
         }
     }
 
-    // Gestionnaires d'événements pour les actions
-    function attachDetailEventHandlers(container) {
-        // Like
-        const likeBtn = container.querySelector('.bouton-like');
-        if (likeBtn) {
-            likeBtn.addEventListener('click', async function () {
-                const tweetId = parseInt(this.dataset.tweetId);
-                const compteur = this.querySelector('.compteur-like');
-                const currentLikes = parseInt(compteur.textContent) || 0;
-
-                try {
-                    await TweetService.updateTweet(tweetId, {
-                        likes: currentLikes + 1
-                    });
-                    compteur.textContent = currentLikes + 1;
-                } catch (error) {
-                    console.error('Erreur lors du like:', error);
-                }
+    function attachReplyEventHandlers(container) {
+        const likes = container.querySelectorAll('.bouton-like');
+        for (let i = 0; i < likes.length; i++) {
+            likes[i].addEventListener('click', async function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const id = this.getAttribute('data-tweet-id');
+                await toggleLike(id, this);
             });
         }
 
-        // Retweet
-        const retweetBtn = container.querySelector('.bouton-retweet');
-        if (retweetBtn) {
-            retweetBtn.addEventListener('click', async function () {
-                const tweetId = parseInt(this.dataset.tweetId);
-                const compteur = this.querySelector('.compteur-retweet');
-                const currentRetweets = parseInt(compteur.textContent) || 0;
-
-                try {
-                    await TweetService.updateTweet(tweetId, {
-                        retweets: currentRetweets + 1
-                    });
-                    compteur.textContent = currentRetweets + 1;
-                } catch (error) {
-                    console.error('Erreur lors du retweet:', error);
-                }
-            });
-        }
-
-        // Suppression
-        const deleteBtn = container.querySelector('.bouton-supprimer-tweet');
-        if (deleteBtn) {
-            deleteBtn.addEventListener('click', async function () {
-                if (!confirm('Êtes-vous sûr de vouloir supprimer ce tweet ?')) {
-                    return;
-                }
-
-                const tweetId = parseInt(this.dataset.tweetId);
-
-                try {
-                    const success = await TweetService.deleteTweet(tweetId);
-                    if (success) {
-                        window.location.href = 'index.html';
-                    } else {
-                        alert('Erreur lors de la suppression du tweet.');
-                    }
-                } catch (error) {
-                    console.error('Erreur lors de la suppression:', error);
-                    alert('Erreur lors de la suppression du tweet.');
-                }
+        const retweets = container.querySelectorAll('.bouton-retweet');
+        for (let i = 0; i < retweets.length; i++) {
+            retweets[i].addEventListener('click', async function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const id = this.getAttribute('data-tweet-id');
+                await toggleRetweet(id, this);
             });
         }
     }
 
-    function attachTweetEventHandlers() {
-        // Likes
-        document.querySelectorAll('.bouton-like').forEach(btn => {
-            btn.addEventListener('click', async function () {
-                const tweetId = parseInt(this.dataset.tweetId);
-                const compteur = this.querySelector('.compteur-like');
-                const currentLikes = parseInt(compteur.textContent) || 0;
-
-                try {
-                    await TweetService.updateTweet(tweetId, {
-                        likes: currentLikes + 1
-                    });
-                    compteur.textContent = currentLikes + 1;
-                } catch (error) {
-                    console.error('Erreur lors du like:', error);
-                }
-            });
-        });
-
-        // Retweets
-        document.querySelectorAll('.bouton-retweet').forEach(btn => {
-            btn.addEventListener('click', async function () {
-                const tweetId = parseInt(this.dataset.tweetId);
-                const compteur = this.querySelector('.compteur-retweet');
-                const currentRetweets = parseInt(compteur.textContent) || 0;
-
-                try {
-                    await TweetService.updateTweet(tweetId, {
-                        retweets: currentRetweets + 1
-                    });
-                    compteur.textContent = currentRetweets + 1;
-                } catch (error) {
-                    console.error('Erreur lors du retweet:', error);
-                }
-            });
-        });
-
-        // Suppression
-        document.querySelectorAll('.bouton-supprimer-tweet').forEach(btn => {
-            btn.addEventListener('click', async function () {
-                if (!confirm('Êtes-vous sûr de vouloir supprimer ce tweet ?')) {
-                    return;
-                }
-
-                const tweetId = parseInt(this.dataset.tweetId);
-
-                try {
-                    const success = await TweetService.deleteTweet(tweetId);
-                    if (success) {
-                        await loadReplies();
-                    } else {
-                        alert('Erreur lors de la suppression du tweet.');
-                    }
-                } catch (error) {
-                    console.error('Erreur lors de la suppression:', error);
-                    alert('Erreur lors de la suppression du tweet.');
-                }
-            });
-        });
-    }
-
-    // Créer une réponse
+    // Soumettre une réponse
     if (formulaireReponse) {
         formulaireReponse.addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const content = contenuReponse.value.trim();
-
-            if (!content || content.length === 0 || content.length > 280) {
-                alert('La réponse doit contenir entre 1 et 280 caractères.');
-                return;
-            }
-
-            if (!currentUser) {
-                alert('Vous devez être connecté pour répondre.');
+            if (!content || content.length > 280) {
+                showMessage('La réponse doit contenir entre 1 et 280 caractères', 'erreur');
                 return;
             }
 
             try {
-                const boutonReponse = document.querySelector('#formulaireReponse .bouton-tweeter');
-                boutonReponse.disabled = true;
-                boutonReponse.textContent = 'Publication...';
+                boutonRepondre.disabled = true;
+                boutonRepondre.textContent = 'Publication...';
 
-                await TweetService.createTweet({
-                    userId: currentUser.id,
-                    content: content,
-                    media: [],
-                    replyTo: tweetId
-                });
+                const userId = currentUser ? currentUser.id : '1';
+                const reply = await createTweet(userId, content, [], tweetId);
 
-                contenuReponse.value = '';
-                compteurReponse.textContent = '0';
-                compteurReponse.parentElement.style.color = '#71767b';
-                boutonReponse.disabled = true;
+                if (reply) {
+                    contenuReponse.value = '';
+                    compteurReponse.textContent = '0';
+                    boutonRepondre.disabled = true;
+                    showMessage('Réponse publiée !', 'succes');
+                    await loadTweetDetail();
+                } else {
+                    showMessage('Erreur lors de la publication', 'erreur');
+                }
 
-                TweetService.showSuccess('Réponse publiée avec succès !');
-
-                // Recharger les réponses et mettre à jour le tweet principal
-                await loadTweetDetail();
             } catch (error) {
-                console.error('Erreur lors de la création de la réponse:', error);
-                alert('Erreur lors de la publication de la réponse.');
+                console.error('Erreur:', error);
+                showMessage('Erreur lors de la publication', 'erreur');
             } finally {
-                const boutonReponse = document.querySelector('#formulaireReponse .bouton-tweeter');
-                boutonReponse.disabled = false;
-                boutonReponse.textContent = 'Répondre';
+                boutonRepondre.textContent = 'Répondre';
             }
         });
-    }
-
-    // Mettre à jour l'avatar du formulaire de réponse
-    const avatarReponse = document.querySelector('#formulaireReponse .avatar-formulaire-tweet img');
-    if (avatarReponse && currentUser) {
-        avatarReponse.src = currentUser.profilePicture || 'images/user-avatar.png';
-        avatarReponse.alt = `Avatar de ${currentUser.name}`;
     }
 
     // Charger le tweet au démarrage
     await loadTweetDetail();
 });
-

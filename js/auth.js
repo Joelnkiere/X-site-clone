@@ -1,4 +1,206 @@
-// Script pour la bascule du mot de passe
+// ============================================
+// AUTHENTIFICATION - FONCTIONS SIMPLES
+// ============================================
+
+const API_BASE_URL = 'http://localhost:3000';
+
+// ============================================
+// GESTION DE LA SESSION UTILISATEUR
+// ============================================
+
+// Sauvegarder l'utilisateur connecté
+function setCurrentUser(user) {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    localStorage.setItem('sessionTimestamp', Date.now().toString());
+}
+
+// Récupérer l'utilisateur connecté
+function getCurrentUser() {
+    const userString = localStorage.getItem('currentUser');
+    if (userString) {
+        return JSON.parse(userString);
+    }
+    return null;
+}
+
+// Vérifier si un utilisateur est connecté
+function isAuthenticated() {
+    const user = getCurrentUser();
+    if (!user) {
+        return false;
+    }
+
+    // Vérifier si la session n'a pas expiré (24h)
+    const timestamp = localStorage.getItem('sessionTimestamp');
+    if (timestamp) {
+        const sessionAge = Date.now() - parseInt(timestamp);
+        const maxAge = 24 * 60 * 60 * 1000; // 24 heures
+        if (sessionAge > maxAge) {
+            logout(false);
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// Déconnecter l'utilisateur
+function logout(redirect) {
+    if (redirect === undefined) {
+        redirect = true;
+    }
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('sessionTimestamp');
+    localStorage.removeItem('likedTweets');
+    localStorage.removeItem('retweetedTweets');
+    localStorage.removeItem('bookmarks');
+    if (redirect) {
+        window.location.href = 'login.html';
+    }
+}
+
+// ============================================
+// VÉRIFICATION DES DONNÉES
+// ============================================
+
+// Vérifier si un email existe déjà
+async function checkEmailExists(email) {
+    try {
+        const response = await fetch(API_BASE_URL + '/users?email=' + encodeURIComponent(email));
+        const users = await response.json();
+        return users.length > 0;
+    } catch (error) {
+        console.error('Erreur:', error);
+        return false;
+    }
+}
+
+// Vérifier si un téléphone existe déjà
+async function checkPhoneExists(phone) {
+    try {
+        const response = await fetch(API_BASE_URL + '/users?phone=' + encodeURIComponent(phone));
+        const users = await response.json();
+        return users.length > 0;
+    } catch (error) {
+        console.error('Erreur:', error);
+        return false;
+    }
+}
+
+// Vérifier si un username existe déjà
+async function checkUsernameExists(username) {
+    try {
+        const response = await fetch(API_BASE_URL + '/users?username=' + encodeURIComponent(username));
+        const users = await response.json();
+        return users.length > 0;
+    } catch (error) {
+        console.error('Erreur:', error);
+        return false;
+    }
+}
+
+// ============================================
+// GÉNÉRATION D'IDENTIFIANTS
+// ============================================
+
+// Générer un username à partir du nom
+function generateUsername(name) {
+    let username = name.toLowerCase();
+    // Supprimer les accents
+    username = username.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    // Garder uniquement les lettres et chiffres
+    username = username.replace(/[^a-z0-9]/g, '');
+    // Limiter à 15 caractères
+    username = username.substring(0, 15);
+    return username;
+}
+
+// Générer un ID unique pour un nouvel utilisateur
+async function getNextUserId() {
+    try {
+        const response = await fetch(API_BASE_URL + '/users');
+        const users = await response.json();
+        if (users.length === 0) {
+            return '1';
+        }
+        let maxId = 0;
+        for (let i = 0; i < users.length; i++) {
+            const id = parseInt(users[i].id);
+            if (id > maxId) {
+                maxId = id;
+            }
+        }
+        return (maxId + 1).toString();
+    } catch (error) {
+        console.error('Erreur:', error);
+        return '1';
+    }
+}
+
+// Trouver un username unique
+async function findUniqueUsername(baseUsername) {
+    let username = baseUsername;
+    let counter = 1;
+
+    while (await checkUsernameExists(username)) {
+        username = baseUsername + counter;
+        counter = counter + 1;
+    }
+
+    return username;
+}
+
+// ============================================
+// AFFICHAGE DES MESSAGES
+// ============================================
+
+// Afficher un message d'erreur
+function showAuthError(message) {
+    let errorElement = document.getElementById('errorMessage');
+    if (!errorElement) {
+        errorElement = document.createElement('div');
+        errorElement.id = 'errorMessage';
+        errorElement.style.cssText = 'background-color: rgba(244, 33, 46, 0.1); border: 1px solid #f4212e; color: #f4212e; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 15px;';
+        const form = document.querySelector('.formulaire-authentification');
+        if (form) {
+            form.insertBefore(errorElement, form.firstChild);
+        }
+    }
+    errorElement.textContent = message;
+    errorElement.style.display = 'block';
+}
+
+// Masquer le message d'erreur
+function hideAuthError() {
+    const errorElement = document.getElementById('errorMessage');
+    if (errorElement) {
+        errorElement.style.display = 'none';
+    }
+}
+
+// Afficher un message de succès
+function showAuthSuccess(message) {
+    let successElement = document.getElementById('successMessage');
+    if (!successElement) {
+        successElement = document.createElement('div');
+        successElement.id = 'successMessage';
+        successElement.style.cssText = 'background-color: rgba(0, 186, 124, 0.1); border: 1px solid #00ba7c; color: #00ba7c; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 15px;';
+        const form = document.querySelector('.formulaire-authentification');
+        if (form) {
+            form.insertBefore(successElement, form.firstChild);
+        }
+    }
+    successElement.textContent = message;
+    successElement.style.display = 'block';
+    setTimeout(function () {
+        successElement.style.display = 'none';
+    }, 3000);
+}
+
+// ============================================
+// BASCULE DU MOT DE PASSE
+// ============================================
+
 document.addEventListener('DOMContentLoaded', function () {
     // Pour login-password.html
     const voirMotDePasse = document.getElementById('voirMotDePasse');
@@ -10,12 +212,12 @@ document.addEventListener('DOMContentLoaded', function () {
         voirMotDePasse.addEventListener('click', function () {
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                iconeOeil.style.display = 'none';
-                iconeOeilFerme.style.display = 'block';
+                if (iconeOeil) iconeOeil.style.display = 'none';
+                if (iconeOeilFerme) iconeOeilFerme.style.display = 'block';
             } else {
                 passwordInput.type = 'password';
-                iconeOeil.style.display = 'block';
-                iconeOeilFerme.style.display = 'none';
+                if (iconeOeil) iconeOeil.style.display = 'block';
+                if (iconeOeilFerme) iconeOeilFerme.style.display = 'none';
             }
         });
     }
@@ -30,18 +232,21 @@ document.addEventListener('DOMContentLoaded', function () {
         togglePasswordSignup.addEventListener('click', function () {
             if (passwordInputSignup.type === 'password') {
                 passwordInputSignup.type = 'text';
-                iconeOeilSignup.style.display = 'none';
-                iconeOeilFermeSignup.style.display = 'block';
+                if (iconeOeilSignup) iconeOeilSignup.style.display = 'none';
+                if (iconeOeilFermeSignup) iconeOeilFermeSignup.style.display = 'block';
             } else {
                 passwordInputSignup.type = 'password';
-                iconeOeilSignup.style.display = 'block';
-                iconeOeilFermeSignup.style.display = 'none';
+                if (iconeOeilSignup) iconeOeilSignup.style.display = 'block';
+                if (iconeOeilFermeSignup) iconeOeilFermeSignup.style.display = 'none';
             }
         });
     }
 });
 
-// Script pour basculer entre téléphone et email dans signup-form.html
+// ============================================
+// BASCULE TÉLÉPHONE/EMAIL
+// ============================================
+
 document.addEventListener('DOMContentLoaded', function () {
     const useEmailLink = document.getElementById('useEmailLink');
     const phoneInput = document.getElementById('phone');
@@ -49,20 +254,29 @@ document.addEventListener('DOMContentLoaded', function () {
     if (useEmailLink && phoneInput) {
         useEmailLink.addEventListener('click', function (e) {
             e.preventDefault();
-            phoneInput.type = phoneInput.type === 'tel' ? 'email' : 'tel';
-            phoneInput.placeholder = phoneInput.type === 'email' ? 'Email' : 'Téléphone';
-            useEmailLink.textContent = phoneInput.type === 'email' ? 'Utiliser un téléphone' : 'Utiliser un email';
+            if (phoneInput.type === 'tel') {
+                phoneInput.type = 'email';
+                phoneInput.placeholder = 'Email';
+                useEmailLink.textContent = 'Utiliser un téléphone';
+            } else {
+                phoneInput.type = 'tel';
+                phoneInput.placeholder = 'Téléphone';
+                useEmailLink.textContent = 'Utiliser un email';
+            }
         });
     }
 });
 
-// Script pour remplir dynamiquement les jours et années dans signup-form.html
+// ============================================
+// REMPLISSAGE DES JOURS ET ANNÉES
+// ============================================
+
 document.addEventListener('DOMContentLoaded', function () {
     const monthSelect = document.getElementById('month');
     const daySelect = document.getElementById('day');
     const yearSelect = document.getElementById('year');
 
-    // Remplir les années (de 1920 à l'année actuelle)
+    // Remplir les années
     if (yearSelect) {
         const currentYear = new Date().getFullYear();
         for (let year = currentYear; year >= 1920; year--) {
@@ -73,27 +287,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Fonction pour mettre à jour les jours selon le mois sélectionné
+    // Fonction pour mettre à jour les jours
     function updateDays() {
         if (!monthSelect || !daySelect) return;
 
         const month = parseInt(monthSelect.value);
         const selectedDay = daySelect.value;
 
-        // Vider les options existantes (sauf la première)
         daySelect.innerHTML = '<option value="">Jour</option>';
 
         if (month) {
             let daysInMonth = 31;
 
-            // Mois avec 30 jours
-            if ([4, 6, 9, 11].includes(month)) {
+            if (month === 4 || month === 6 || month === 9 || month === 11) {
                 daysInMonth = 30;
-            }
-            // Février
-            else if (month === 2) {
+            } else if (month === 2) {
                 const year = parseInt(yearSelect.value) || new Date().getFullYear();
-                // Année bissextile
                 if ((year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)) {
                     daysInMonth = 29;
                 } else {
@@ -101,27 +310,27 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-            // Remplir les jours
             for (let day = 1; day <= daysInMonth; day++) {
                 const option = document.createElement('option');
-                option.value = day.toString().padStart(2, '0');
+                if (day < 10) {
+                    option.value = '0' + day;
+                } else {
+                    option.value = day.toString();
+                }
                 option.textContent = day;
                 daySelect.appendChild(option);
             }
 
-            // Restaurer la sélection si elle existe toujours
             if (selectedDay && parseInt(selectedDay) <= daysInMonth) {
                 daySelect.value = selectedDay;
             }
         }
     }
 
-    // Écouter les changements de mois
     if (monthSelect) {
         monthSelect.addEventListener('change', updateDays);
     }
 
-    // Écouter les changements d'année (pour février)
     if (yearSelect) {
         yearSelect.addEventListener('change', function () {
             if (monthSelect.value === '02') {
@@ -132,143 +341,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // ============================================
-// MODULE D'AUTHENTIFICATION
-// ============================================
-
-const API_BASE_URL = 'http://localhost:3000';
-
-// Gestion de la session utilisateur
-const AuthService = {
-    // Sauvegarder l'utilisateur connecté
-    setCurrentUser(user) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-    },
-
-    // Récupérer l'utilisateur connecté
-    getCurrentUser() {
-        const user = localStorage.getItem('currentUser');
-        return user ? JSON.parse(user) : null;
-    },
-
-    // Vérifier si un utilisateur est connecté
-    isAuthenticated() {
-        return this.getCurrentUser() !== null;
-    },
-
-    // Déconnecter l'utilisateur
-    logout() {
-        localStorage.removeItem('currentUser');
-        window.location.href = 'login.html';
-    },
-
-    // Générer un username unique à partir du nom
-    generateUsername(name) {
-        const baseUsername = name
-            .toLowerCase()
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .replace(/[^a-z0-9]/g, '')
-            .substring(0, 15);
-
-        return baseUsername;
-    },
-
-    // Vérifier si un email existe déjà
-    async checkEmailExists(email) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/users?email=${encodeURIComponent(email)}`);
-            const users = await response.json();
-            return users.length > 0;
-        } catch (error) {
-            console.error('Erreur lors de la vérification de l\'email:', error);
-            return false;
-        }
-    },
-
-    // Vérifier si un téléphone existe déjà
-    async checkPhoneExists(phone) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/users?phone=${encodeURIComponent(phone)}`);
-            const users = await response.json();
-            return users.length > 0;
-        } catch (error) {
-            console.error('Erreur lors de la vérification du téléphone:', error);
-            return false;
-        }
-    },
-
-    // Vérifier si un username existe déjà
-    async checkUsernameExists(username) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/users?username=${encodeURIComponent(username)}`);
-            const users = await response.json();
-            return users.length > 0;
-        } catch (error) {
-            console.error('Erreur lors de la vérification du username:', error);
-            return false;
-        }
-    },
-
-    // Générer un ID unique pour un nouvel utilisateur
-    async getNextUserId() {
-        try {
-            const response = await fetch(`${API_BASE_URL}/users?_sort=id&_order=desc&_limit=1`);
-            const users = await response.json();
-            return users.length > 0 ? users[0].id + 1 : 1;
-        } catch (error) {
-            console.error('Erreur lors de la récupération du prochain ID:', error);
-            return 1;
-        }
-    },
-
-    // Trouver un username unique
-    async findUniqueUsername(baseUsername) {
-        let username = baseUsername;
-        let counter = 1;
-
-        while (await this.checkUsernameExists(username)) {
-            username = `${baseUsername}${counter}`;
-            counter++;
-        }
-
-        return username;
-    },
-
-    // Afficher un message d'erreur
-    showError(message) {
-        // Créer ou mettre à jour un élément d'erreur
-        let errorElement = document.getElementById('errorMessage');
-        if (!errorElement) {
-            errorElement = document.createElement('div');
-            errorElement.id = 'errorMessage';
-            errorElement.style.cssText = `
-                background-color: #f4212e;
-                color: white;
-                padding: 12px 16px;
-                border-radius: 4px;
-                margin-bottom: 16px;
-                font-size: 15px;
-            `;
-            const form = document.querySelector('.formulaire-authentification');
-            if (form) {
-                form.insertBefore(errorElement, form.firstChild);
-            }
-        }
-        errorElement.textContent = message;
-        errorElement.style.display = 'block';
-    },
-
-    // Masquer le message d'erreur
-    hideError() {
-        const errorElement = document.getElementById('errorMessage');
-        if (errorElement) {
-            errorElement.style.display = 'none';
-        }
-    }
-};
-
-// ============================================
-// INSCRIPTION (signup-form.html)
+// INSCRIPTION
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -277,122 +350,146 @@ document.addEventListener('DOMContentLoaded', function () {
     if (signupForm) {
         signupForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            AuthService.hideError();
+            hideAuthError();
 
             const name = document.getElementById('name').value.trim();
             const phoneInput = document.getElementById('phone');
-            const phone = phoneInput.type === 'tel' ? phoneInput.value.trim() : '';
-            const email = phoneInput.type === 'email' ? phoneInput.value.trim() : '';
+            let phone = '';
+            let email = '';
+
+            if (phoneInput.type === 'tel') {
+                phone = phoneInput.value.trim();
+            } else {
+                email = phoneInput.value.trim();
+            }
+
             const password = document.getElementById('password').value;
             const month = document.getElementById('month').value;
             const day = document.getElementById('day').value;
             const year = document.getElementById('year').value;
 
-            // Validation
+            // Validation du nom
             if (!name) {
-                AuthService.showError('Veuillez entrer votre nom et prénom.');
+                showAuthError('Veuillez entrer votre nom.');
                 return;
             }
 
+            // Validation email/téléphone
             if (!email && !phone) {
-                AuthService.showError('Veuillez entrer un email ou un numéro de téléphone.');
+                showAuthError('Veuillez entrer un email ou un téléphone.');
                 return;
             }
 
-            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                AuthService.showError('Veuillez entrer une adresse email valide.');
-                return;
+            // Validation format email
+            if (email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showAuthError('Email invalide.');
+                    return;
+                }
             }
 
+            // Validation mot de passe
             if (!password || password.length < 6) {
-                AuthService.showError('Le mot de passe doit contenir au moins 6 caractères.');
+                showAuthError('Le mot de passe doit contenir au moins 6 caractères.');
                 return;
             }
 
+            // Validation date de naissance
             if (!month || !day || !year) {
-                AuthService.showError('Veuillez sélectionner votre date de naissance complète.');
+                showAuthError('Veuillez sélectionner votre date de naissance.');
                 return;
             }
 
-            // Vérifier l'âge (doit avoir au moins 13 ans)
-            const birthDate = new Date(`${year}-${month}-${day}`);
+            // Vérifier l'âge (minimum 13 ans)
+            const birthDate = new Date(year + '-' + month + '-' + day);
             const today = new Date();
-            const age = today.getFullYear() - birthDate.getFullYear();
+            let age = today.getFullYear() - birthDate.getFullYear();
             const monthDiff = today.getMonth() - birthDate.getMonth();
             if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
+                age = age - 1;
             }
 
             if (age < 13) {
-                AuthService.showError('Vous devez avoir au moins 13 ans pour créer un compte.');
+                showAuthError('Vous devez avoir au moins 13 ans.');
                 return;
             }
 
             try {
-                // Vérifier si l'email existe déjà
-                if (email && await AuthService.checkEmailExists(email)) {
-                    AuthService.showError('Cet email est déjà utilisé. Veuillez en choisir un autre.');
-                    return;
+                // Vérifier si l'email existe
+                if (email) {
+                    const emailExists = await checkEmailExists(email);
+                    if (emailExists) {
+                        showAuthError('Cet email est déjà utilisé.');
+                        return;
+                    }
                 }
 
-                // Vérifier si le téléphone existe déjà
-                if (phone && await AuthService.checkPhoneExists(phone)) {
-                    AuthService.showError('Ce numéro de téléphone est déjà utilisé. Veuillez en choisir un autre.');
-                    return;
+                // Vérifier si le téléphone existe
+                if (phone) {
+                    const phoneExists = await checkPhoneExists(phone);
+                    if (phoneExists) {
+                        showAuthError('Ce numéro est déjà utilisé.');
+                        return;
+                    }
                 }
 
                 // Générer un username unique
-                const baseUsername = AuthService.generateUsername(name);
-                const username = await AuthService.findUniqueUsername(baseUsername);
+                const baseUsername = generateUsername(name);
+                const username = await findUniqueUsername(baseUsername);
 
                 // Générer un ID unique
-                const id = await AuthService.getNextUserId();
+                const id = await getNextUserId();
 
                 // Créer l'utilisateur
                 const newUser = {
                     id: id,
                     name: name,
                     username: username,
-                    email: email || '',
+                    email: email,
                     password: password,
-                    phone: phone || '',
+                    phone: phone,
                     profilePicture: '',
+                    bannerPicture: '',
                     bio: '',
                     location: '',
                     website: '',
                     createdAt: new Date().toISOString(),
                     followers: 0,
-                    following: 0
+                    following: 0,
+                    likedTweets: [],
+                    retweetedTweets: [],
+                    bookmarks: []
                 };
 
-                const response = await fetch(`${API_BASE_URL}/users`, {
+                // Envoyer au serveur
+                const response = await fetch(API_BASE_URL + '/users', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(newUser)
                 });
 
                 if (response.ok) {
                     const createdUser = await response.json();
-                    // Connecter automatiquement l'utilisateur après l'inscription
-                    AuthService.setCurrentUser(createdUser);
-                    // Rediriger vers la page d'accueil
-                    alert('Compte créé avec succès ! Bienvenue sur X Clone.');
-                    window.location.href = 'index.html';
+                    setCurrentUser(createdUser);
+                    showAuthSuccess('Compte créé !');
+                    setTimeout(function () {
+                        window.location.href = 'index.html';
+                    }, 1000);
                 } else {
-                    AuthService.showError('Une erreur est survenue lors de la création du compte. Veuillez réessayer.');
+                    showAuthError('Erreur lors de la création du compte.');
                 }
+
             } catch (error) {
-                console.error('Erreur lors de l\'inscription:', error);
-                AuthService.showError('Une erreur est survenue. Veuillez vérifier que le serveur est démarré.');
+                console.error('Erreur:', error);
+                showAuthError('Erreur de connexion au serveur.');
             }
         });
     }
 });
 
 // ============================================
-// LOGIN ÉTAPE 1 (login-step2.html)
+// CONNEXION ÉTAPE 1
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -401,82 +498,98 @@ document.addEventListener('DOMContentLoaded', function () {
     if (loginForm) {
         loginForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            AuthService.hideError();
+            hideAuthError();
 
             const identifier = document.getElementById('identifier').value.trim();
 
             if (!identifier) {
-                AuthService.showError('Veuillez entrer un identifiant.');
+                showAuthError('Veuillez entrer un identifiant.');
                 return;
             }
 
             try {
-                // Chercher l'utilisateur par email, téléphone ou username
-                const response = await fetch(`${API_BASE_URL}/users`);
+                const response = await fetch(API_BASE_URL + '/users');
                 const users = await response.json();
 
-                const user = users.find(u =>
-                    u.email === identifier ||
-                    u.phone === identifier ||
-                    u.username === identifier
-                );
+                let foundUser = null;
+                for (let i = 0; i < users.length; i++) {
+                    const user = users[i];
+                    if (user.email === identifier || user.phone === identifier || user.username === identifier) {
+                        foundUser = user;
+                        break;
+                    }
+                }
 
-                if (user) {
-                    // Stocker l'utilisateur trouvé pour l'étape suivante
-                    sessionStorage.setItem('loginUser', JSON.stringify(user));
-                    // Rediriger vers la page de mot de passe
+                if (foundUser) {
+                    sessionStorage.setItem('loginUser', JSON.stringify(foundUser));
                     window.location.href = 'login-password.html';
                 } else {
-                    AuthService.showError('Aucun compte trouvé avec cet identifiant.');
+                    showAuthError('Aucun compte trouvé.');
                 }
+
             } catch (error) {
-                console.error('Erreur lors de la connexion:', error);
-                AuthService.showError('Une erreur est survenue. Veuillez vérifier que le serveur est démarré.');
+                console.error('Erreur:', error);
+                showAuthError('Erreur de connexion au serveur.');
             }
         });
     }
 });
 
 // ============================================
-// LOGIN ÉTAPE 2 (login-password.html)
+// CONNEXION ÉTAPE 2
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function () {
     const loginPasswordForm = document.getElementById('loginPasswordForm');
 
     if (loginPasswordForm) {
-        // Vérifier si on a un utilisateur en session
         const loginUserStr = sessionStorage.getItem('loginUser');
         if (!loginUserStr) {
-            // Rediriger vers la page de login si pas d'utilisateur en session
             window.location.href = 'login-step2.html';
             return;
         }
 
+        const loginUser = JSON.parse(loginUserStr);
+
+        // Afficher le nom d'utilisateur
+        const usernameDisplay = document.getElementById('usernameDisplay');
+        if (usernameDisplay) {
+            usernameDisplay.textContent = '@' + loginUser.username;
+        }
+
         loginPasswordForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            AuthService.hideError();
+            hideAuthError();
 
             const password = document.getElementById('password').value;
-            const loginUser = JSON.parse(sessionStorage.getItem('loginUser'));
 
             if (!password) {
-                AuthService.showError('Veuillez entrer votre mot de passe.');
+                showAuthError('Veuillez entrer votre mot de passe.');
                 return;
             }
 
-            // Vérifier le mot de passe
             if (loginUser.password === password) {
-                // Mot de passe correct - connecter l'utilisateur
-                AuthService.setCurrentUser(loginUser);
-                sessionStorage.removeItem('loginUser');
+                // Rafraîchir les données depuis le serveur
+                try {
+                    const response = await fetch(API_BASE_URL + '/users/' + loginUser.id);
+                    if (response.ok) {
+                        const freshUser = await response.json();
+                        setCurrentUser(freshUser);
+                        localStorage.setItem('likedTweets', JSON.stringify(freshUser.likedTweets || []));
+                        localStorage.setItem('retweetedTweets', JSON.stringify(freshUser.retweetedTweets || []));
+                        localStorage.setItem('bookmarks', JSON.stringify(freshUser.bookmarks || []));
+                    } else {
+                        setCurrentUser(loginUser);
+                    }
+                } catch (error) {
+                    setCurrentUser(loginUser);
+                }
 
-                // Rediriger vers la page d'accueil
+                sessionStorage.removeItem('loginUser');
                 window.location.href = 'index.html';
             } else {
-                AuthService.showError('Mot de passe incorrect.');
+                showAuthError('Mot de passe incorrect.');
             }
         });
     }
 });
-

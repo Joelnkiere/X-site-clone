@@ -20,15 +20,18 @@ body {
     margin: 0 auto;
 }
 
-/* Barre latérale */
+/* ================================
+   BARRE LATÉRALE (SIDEBAR)
+================================ */
 .barre-laterale {
     width: 275px;
     min-height: 100vh;
-    padding: 0 8px;
+    padding: 0 12px;
     position: sticky;
     top: 0;
     height: 100vh;
     overflow-y: auto;
+    border-right: 1px solid #2f3336;
 }
 
 .menu-navigation {
@@ -40,12 +43,12 @@ body {
 
 .logo-navigation {
     padding: 12px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }
 
 .logo-navigation h1 {
-    font-size: 28px;
-    font-weight: 700;
+    font-size: 32px;
+    font-weight: 900;
     color: #ffffff;
 }
 
@@ -63,28 +66,101 @@ body {
 .lien-navigation {
     display: flex;
     align-items: center;
+    gap: 20px;
     padding: 12px 16px;
     font-size: 20px;
-    font-weight: 700;
-    color: #ffffff;
+    font-weight: 400;
+    color: #e7e9ea;
     text-decoration: none;
-    border-radius: 24px;
-    transition: background-color 0.2s;
-    width: 100%;
+    border-radius: 9999px;
+    transition: background-color 0.2s ease;
+    width: fit-content;
 }
 
 .lien-navigation:hover {
-    background-color: #181818;
+    background-color: rgba(231, 233, 234, 0.1);
 }
 
 .lien-navigation.actif {
-    color: #ffffff;
+    font-weight: 700;
 }
 
-/* Contenu principal */
+.lien-navigation svg {
+    width: 26px;
+    height: 26px;
+    fill: currentColor;
+}
+
+/* Bouton Poster */
+.bouton-poster {
+    width: 90%;
+    padding: 16px 32px;
+    margin: 16px auto;
+    background-color: #1d9bf0;
+    color: #ffffff;
+    border: none;
+    border-radius: 9999px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.bouton-poster:hover {
+    background-color: #1a8cd8;
+}
+
+/* Profil utilisateur en bas de sidebar */
+.profil-sidebar {
+    margin-top: auto;
+    padding: 12px;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profil-sidebar:hover {
+    background-color: rgba(231, 233, 234, 0.1);
+}
+
+.profil-sidebar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profil-sidebar-info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.profil-sidebar-nom {
+    font-weight: 700;
+    font-size: 15px;
+    color: #e7e9ea;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profil-sidebar-username {
+    font-size: 15px;
+    color: #71767b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ================================
+   CONTENU PRINCIPAL
+================================ */
 .contenu-principal {
     flex: 1;
-    border-left: 1px solid #2f3336;
+    max-width: 600px;
     border-right: 1px solid #2f3336;
     min-height: 100vh;
 }
@@ -95,17 +171,57 @@ body {
     top: 0;
     background-color: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(12px);
-    padding: 12px 16px;
+    padding: 0;
     border-bottom: 1px solid #2f3336;
     z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 16px;
 }
 
 .en-tete-timeline h2 {
     font-size: 20px;
     font-weight: 700;
+    padding: 12px 16px;
+}
+
+/* Onglets Pour toi / Abonnements */
+.onglets-timeline {
+    display: flex;
+    border-bottom: 1px solid #2f3336;
+}
+
+.onglet-timeline {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: #71767b;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    position: relative;
+    text-decoration: none;
+}
+
+.onglet-timeline:hover {
+    background-color: rgba(231, 233, 234, 0.1);
+}
+
+.onglet-timeline.actif {
+    font-weight: 700;
+    color: #e7e9ea;
+}
+
+.onglet-timeline.actif::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background-color: #1d9bf0;
+    border-radius: 2px;
 }
 
 .lien-retour {
@@ -123,12 +239,14 @@ body {
 }
 
 .lien-retour:hover {
-    background-color: #181818;
+    background-color: rgba(231, 233, 234, 0.1);
 }
 
-/* Formulaire de tweet */
+/* ================================
+   FORMULAIRE DE TWEET
+================================ */
 .section-formulaire-tweet {
-    padding: 16px;
+    padding: 12px 16px;
     border-bottom: 1px solid #2f3336;
 }
 
@@ -146,8 +264,8 @@ body {
 }
 
 .avatar {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -163,13 +281,13 @@ body {
     width: 100%;
     background-color: transparent;
     border: none;
-    color: #ffffff;
+    color: #e7e9ea;
     font-size: 20px;
     resize: none;
     outline: none;
     font-family: inherit;
     padding: 12px 0;
-    min-height: 120px;
+    min-height: 52px;
 }
 
 .zone-texte-tweet::placeholder {
@@ -181,23 +299,152 @@ body {
     justify-content: space-between;
     align-items: center;
     padding-top: 12px;
+    border-top: 1px solid #2f3336;
+}
+
+.options-tweet {
+    display: flex;
+    gap: 4px;
+}
+
+.option-tweet {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    background: none;
+    border: none;
+}
+
+.option-tweet:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+}
+
+.option-tweet svg {
+    width: 20px;
+    height: 20px;
+    fill: #1d9bf0;
 }
 
 .compteur-caracteres {
-    font-size: 15px;
+    font-size: 13px;
     color: #71767b;
 }
 
+/* Aperçu de l'image */
+.apercu-image {
+    position: relative;
+    margin-bottom: 12px;
+    border-radius: 16px;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.apercu-image img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 1px solid #2f3336;
+}
+
+.bouton-supprimer-image {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.bouton-supprimer-image:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+/* Chargement */
+.chargement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    color: #71767b;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #2f3336;
+    border-top-color: #1d9bf0;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 12px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Messages */
+.message-succes {
+    background-color: rgba(0, 186, 124, 0.1);
+    border: 1px solid #00ba7c;
+    color: #00ba7c;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 12px;
+    font-size: 14px;
+    animation: fadeIn 0.3s ease;
+}
+
+.message-erreur {
+    background-color: rgba(244, 33, 46, 0.1);
+    border: 1px solid #f4212e;
+    color: #f4212e;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 12px;
+    font-size: 14px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .bouton-tweeter {
-    padding: 10px 24px;
+    padding: 8px 16px;
     background-color: #1d9bf0;
     color: #ffffff;
     border: none;
-    border-radius: 24px;
+    border-radius: 9999px;
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s ease;
 }
 
 .bouton-tweeter:hover {
@@ -205,32 +452,29 @@ body {
 }
 
 .bouton-tweeter:disabled {
-    background-color: #1d9bf0;
-    opacity: 0.5;
+    background-color: rgba(29, 155, 240, 0.5);
     cursor: not-allowed;
 }
 
-.bouton-tweeter:disabled:hover {
-    background-color: #1d9bf0;
-}
-
-/* Timeline */
+/* ================================
+   TIMELINE & TWEETS
+================================ */
 .timeline {
     display: flex;
     flex-direction: column;
 }
 
-/* Carte de tweet */
 .carte-tweet {
     display: flex;
     gap: 12px;
-    padding: 16px;
+    padding: 12px 16px;
     border-bottom: 1px solid #2f3336;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
 }
 
 .carte-tweet:hover {
-    background-color: #080808;
+    background-color: rgba(231, 233, 234, 0.03);
 }
 
 .avatar-tweet {
@@ -241,7 +485,8 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
+    min-width: 0;
 }
 
 .en-tete-tweet {
@@ -254,7 +499,7 @@ body {
 .nom-auteur {
     font-weight: 700;
     font-size: 15px;
-    color: #ffffff;
+    color: #e7e9ea;
 }
 
 .nom-utilisateur {
@@ -270,40 +515,158 @@ body {
 .texte-tweet {
     font-size: 15px;
     line-height: 1.5;
-    color: #ffffff;
+    color: #e7e9ea;
     word-wrap: break-word;
 }
 
-/* Actions de tweet */
+/* Hashtags et mentions */
+.texte-tweet .hashtag,
+.texte-tweet .mention {
+    color: #1d9bf0;
+    text-decoration: none;
+}
+
+.texte-tweet .hashtag:hover,
+.texte-tweet .mention:hover {
+    text-decoration: underline;
+}
+
+/* ================================
+   ACTIONS DE TWEET
+================================ */
 .actions-tweet {
     display: flex;
     align-items: center;
     justify-content: space-between;
     max-width: 425px;
-    margin-top: 4px;
+    margin-top: 12px;
 }
 
 .bouton-action {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     background: none;
     border: none;
     color: #71767b;
     font-size: 13px;
     cursor: pointer;
     padding: 8px;
-    border-radius: 50%;
-    transition: all 0.2s;
+    border-radius: 9999px;
+    transition: all 0.2s ease;
+    text-decoration: none;
 }
 
-.bouton-action:hover {
+/* Répondre - bleu au survol */
+.bouton-action.bouton-repondre:hover,
+.bouton-action[aria-label="Répondre"]:hover {
     background-color: rgba(29, 155, 240, 0.1);
     color: #1d9bf0;
 }
 
-.icone-action {
-    font-size: 18px;
+.bouton-action.bouton-repondre:hover svg,
+.bouton-action[aria-label="Répondre"]:hover svg {
+    fill: #1d9bf0;
+}
+
+/* Retweet - vert au survol */
+.bouton-action.bouton-retweet:hover,
+.bouton-action[aria-label="Retweeter"]:hover {
+    background-color: rgba(0, 186, 124, 0.1);
+    color: #00ba7c;
+}
+
+.bouton-action.bouton-retweet:hover svg,
+.bouton-action[aria-label="Retweeter"]:hover svg {
+    fill: #00ba7c;
+}
+
+.bouton-action.bouton-retweet.actif {
+    color: #00ba7c;
+}
+
+.bouton-action.bouton-retweet.actif svg {
+    fill: #00ba7c;
+}
+
+/* Like - rouge/rose au survol */
+.bouton-action.bouton-like:hover,
+.bouton-action[aria-label="J'aime"]:hover {
+    background-color: rgba(249, 24, 128, 0.1);
+    color: #f91880;
+}
+
+.bouton-action.bouton-like:hover svg,
+.bouton-action[aria-label="J'aime"]:hover svg {
+    fill: #f91880;
+}
+
+.bouton-action.bouton-like.actif {
+    color: #f91880;
+}
+
+.bouton-action.bouton-like.actif svg {
+    fill: #f91880;
+}
+
+/* Animation du like */
+@keyframes like-animation {
+    0% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.2);
+    }
+
+    50% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bouton-action.bouton-like.animating svg {
+    animation: like-animation 0.3s ease-in-out;
+}
+
+/* Partager - bleu au survol */
+.bouton-action[aria-label="Partager"]:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+.bouton-action[aria-label="Partager"]:hover svg {
+    fill: #1d9bf0;
+}
+
+/* Bookmark - bleu au survol */
+.bouton-action.bouton-bookmark:hover,
+.bouton-action[aria-label="Enregistrer"]:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+.bouton-action.bouton-bookmark:hover svg,
+.bouton-action[aria-label="Enregistrer"]:hover svg {
+    fill: #1d9bf0;
+}
+
+.bouton-action.bouton-bookmark.actif {
+    color: #1d9bf0;
+}
+
+.bouton-action.bouton-bookmark.actif svg {
+    fill: #1d9bf0;
+}
+
+.bouton-action svg {
+    width: 18px;
+    height: 18px;
+    fill: #71767b;
+    transition: fill 0.2s ease;
 }
 
 .compteur-action {
@@ -328,7 +691,212 @@ body {
     color: #f4212e;
 }
 
-/* Page de profil */
+/* ================================
+   PANNEAU DROIT (RIGHT SIDEBAR)
+================================ */
+.panneau-droit {
+    width: 350px;
+    padding: 0 24px;
+    min-height: 100vh;
+}
+
+/* Barre de recherche */
+.recherche-container {
+    position: sticky;
+    top: 0;
+    padding: 12px 0;
+    background-color: #000000;
+    z-index: 10;
+}
+
+.barre-recherche {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #202327;
+    border-radius: 9999px;
+    padding: 12px 16px;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.barre-recherche:focus-within {
+    background-color: #000000;
+    border-color: #1d9bf0;
+}
+
+.barre-recherche svg {
+    width: 20px;
+    height: 20px;
+    fill: #71767b;
+    flex-shrink: 0;
+}
+
+.barre-recherche:focus-within svg {
+    fill: #1d9bf0;
+}
+
+.input-recherche {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #e7e9ea;
+    font-size: 15px;
+    outline: none;
+}
+
+.input-recherche::placeholder {
+    color: #71767b;
+}
+
+/* Trending / Tendances */
+.section-tendances {
+    background-color: #16181c;
+    border-radius: 16px;
+    margin-top: 16px;
+    overflow: hidden;
+}
+
+.titre-section-tendances {
+    font-size: 20px;
+    font-weight: 700;
+    padding: 12px 16px;
+    color: #e7e9ea;
+}
+
+.tendance {
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.tendance:hover {
+    background-color: rgba(231, 233, 234, 0.03);
+}
+
+.tendance-categorie {
+    font-size: 13px;
+    color: #71767b;
+}
+
+.tendance-sujet {
+    font-size: 15px;
+    font-weight: 700;
+    color: #e7e9ea;
+    margin: 4px 0;
+}
+
+.tendance-tweets {
+    font-size: 13px;
+    color: #71767b;
+}
+
+.voir-plus-tendances {
+    display: block;
+    padding: 16px;
+    color: #1d9bf0;
+    font-size: 15px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.voir-plus-tendances:hover {
+    background-color: rgba(231, 233, 234, 0.03);
+}
+
+/* Suggestions à suivre */
+.section-suggestions {
+    background-color: #16181c;
+    border-radius: 16px;
+    margin-top: 16px;
+    overflow: hidden;
+}
+
+.titre-section-suggestions {
+    font-size: 20px;
+    font-weight: 700;
+    padding: 12px 16px;
+    color: #e7e9ea;
+}
+
+.suggestion-profil {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.suggestion-profil:hover {
+    background-color: rgba(231, 233, 234, 0.03);
+}
+
+.suggestion-profil img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.suggestion-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.suggestion-nom {
+    font-size: 15px;
+    font-weight: 700;
+    color: #e7e9ea;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.suggestion-username {
+    font-size: 15px;
+    color: #71767b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bouton-suivre {
+    padding: 8px 16px;
+    background-color: #eff3f4;
+    color: #0f1419;
+    border: none;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.bouton-suivre:hover {
+    background-color: #d7dbdc;
+}
+
+/* Footer du panneau droit */
+.footer-droit {
+    padding: 16px;
+    color: #71767b;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.footer-droit a {
+    color: #71767b;
+    text-decoration: none;
+}
+
+.footer-droit a:hover {
+    text-decoration: underline;
+}
+
+/* ================================
+   PAGE DE PROFIL
+================================ */
 .en-tete-profil {
     border-bottom: 1px solid #2f3336;
 }
@@ -365,8 +933,27 @@ body {
     object-fit: cover;
 }
 
+.bouton-editer-profil {
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    padding: 8px 16px;
+    background-color: transparent;
+    color: #e7e9ea;
+    border: 1px solid #536471;
+    border-radius: 9999px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.bouton-editer-profil:hover {
+    background-color: rgba(239, 243, 244, 0.1);
+}
+
 .details-profil {
-    margin-top: 80px;
+    margin-top: 70px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -375,7 +962,7 @@ body {
 .nom-profil {
     font-size: 20px;
     font-weight: 700;
-    color: #ffffff;
+    color: #e7e9ea;
 }
 
 .nom-utilisateur-profil {
@@ -385,7 +972,7 @@ body {
 
 .bio-profil {
     font-size: 15px;
-    color: #ffffff;
+    color: #e7e9ea;
     line-height: 1.5;
 }
 
@@ -418,20 +1005,21 @@ body {
     display: flex;
     gap: 20px;
     font-size: 15px;
-    color: #71767b;
 }
 
 .element-statistique {
+    color: #71767b;
     cursor: pointer;
     transition: color 0.2s;
+    text-decoration: none;
 }
 
 .element-statistique:hover {
-    color: #ffffff;
+    text-decoration: underline;
 }
 
 .element-statistique strong {
-    color: #ffffff;
+    color: #e7e9ea;
     font-weight: 700;
 }
 
@@ -452,25 +1040,38 @@ body {
 }
 
 .lien-navigation-profil {
-    display: block;
+    display: flex;
+    justify-content: center;
     padding: 16px;
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 500;
     color: #71767b;
     text-decoration: none;
     text-align: center;
-    border-bottom: 2px solid transparent;
+    position: relative;
     transition: all 0.2s;
 }
 
 .lien-navigation-profil:hover {
-    background-color: #181818;
-    color: #ffffff;
+    background-color: rgba(231, 233, 234, 0.1);
+    color: #e7e9ea;
 }
 
 .lien-navigation-profil.actif {
-    color: #ffffff;
-    border-bottom-color: #1d9bf0;
+    color: #e7e9ea;
+    font-weight: 700;
+}
+
+.lien-navigation-profil.actif::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background-color: #1d9bf0;
+    border-radius: 2px;
 }
 
 .tweets-profil {
@@ -478,7 +1079,9 @@ body {
     flex-direction: column;
 }
 
-/* Page de détail du tweet */
+/* ================================
+   PAGE DE DÉTAIL DU TWEET
+================================ */
 .carte-tweet-principal {
     display: flex;
     gap: 12px;
@@ -497,6 +1100,11 @@ body {
     max-width: 100%;
     border-radius: 16px;
     object-fit: cover;
+}
+
+.video-tweet {
+    width: 100%;
+    border-radius: 16px;
 }
 
 .pied-tweet {
@@ -523,7 +1131,7 @@ body {
 .en-tete-reponses h3 {
     font-size: 20px;
     font-weight: 700;
-    color: #ffffff;
+    color: #e7e9ea;
 }
 
 .section-formulaire-reponse {
@@ -531,26 +1139,114 @@ body {
     border-bottom: 1px solid #2f3336;
 }
 
-/* Responsive */
+/* ================================
+   MESSAGES D'ERREUR ET SUCCÈS
+================================ */
+.message-erreur {
+    background-color: rgba(244, 33, 46, 0.1);
+    border: 1px solid #f4212e;
+    color: #f4212e;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 16px;
+    font-size: 15px;
+}
+
+.message-succes {
+    background-color: rgba(0, 186, 124, 0.1);
+    border: 1px solid #00ba7c;
+    color: #00ba7c;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 16px;
+    font-size: 15px;
+}
+
+/* Chargement */
+.chargement {
+    display: flex;
+    justify-content: center;
+    padding: 32px;
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid #2f3336;
+    border-top-color: #1d9bf0;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ================================
+   RESPONSIVE - TABLETTE
+================================ */
+@media (max-width: 1280px) {
+    .panneau-droit {
+        width: 290px;
+    }
+}
+
 @media (max-width: 1024px) {
     .barre-laterale {
         width: 88px;
+        padding: 0 12px;
     }
 
     .logo-navigation h1 {
-        font-size: 24px;
+        font-size: 28px;
+        text-align: center;
     }
 
     .lien-navigation {
         justify-content: center;
         padding: 12px;
+        width: 50px;
+        height: 50px;
     }
 
-    .lien-navigation span {
+    .lien-navigation span.texte-navigation {
         display: none;
+    }
+
+    .bouton-poster {
+        width: 50px;
+        height: 50px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0;
+    }
+
+    .bouton-poster::before {
+        content: '+';
+        font-size: 28px;
+        font-weight: 300;
+    }
+
+    .profil-sidebar-info {
+        display: none;
+    }
+
+    .panneau-droit {
+        display: none;
+    }
+
+    .contenu-principal {
+        max-width: none;
     }
 }
 
+/* ================================
+   RESPONSIVE - MOBILE
+================================ */
 @media (max-width: 768px) {
     .conteneur-application {
         flex-direction: column;
@@ -559,18 +1255,23 @@ body {
     .barre-laterale {
         width: 100%;
         height: auto;
+        min-height: auto;
         position: fixed;
         bottom: 0;
         top: auto;
         border-top: 1px solid #2f3336;
-        background-color: #000000;
+        border-right: none;
+        background-color: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(12px);
         z-index: 100;
+        padding: 0;
     }
 
     .menu-navigation {
         flex-direction: row;
         justify-content: space-around;
-        padding: 8px 0;
+        padding: 0;
+        height: auto;
     }
 
     .logo-navigation {
@@ -581,19 +1282,51 @@ body {
         flex-direction: row;
         width: 100%;
         justify-content: space-around;
+        gap: 0;
+    }
+
+    .element-navigation {
+        flex: 1;
     }
 
     .lien-navigation {
         flex-direction: column;
         gap: 4px;
-        font-size: 12px;
-        padding: 8px;
+        font-size: 10px;
+        padding: 12px 8px;
+        width: 100%;
+        justify-content: center;
+        border-radius: 0;
+    }
+
+    .lien-navigation span.texte-navigation {
+        display: block;
+        font-size: 10px;
+    }
+
+    .lien-navigation svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .bouton-poster {
+        display: none;
+    }
+
+    .profil-sidebar {
+        display: none;
     }
 
     .contenu-principal {
-        margin-bottom: 60px;
+        margin-bottom: 70px;
+        border-right: none;
     }
 
+    .panneau-droit {
+        display: none;
+    }
+
+    /* Profil mobile */
     .avatar-profil {
         width: 100px;
         height: 100px;
@@ -606,13 +1339,16 @@ body {
     .details-profil {
         margin-top: 60px;
     }
-}
 
-@media (max-width: 480px) {
     .banniere-profil {
         height: 150px;
     }
+}
 
+/* ================================
+   RESPONSIVE - PETIT MOBILE
+================================ */
+@media (max-width: 480px) {
     .avatar-profil {
         width: 80px;
         height: 80px;
@@ -629,5 +1365,13 @@ body {
     .statistiques-profil {
         flex-direction: column;
         gap: 8px;
+    }
+
+    .zone-texte-tweet {
+        font-size: 17px;
+    }
+
+    .en-tete-timeline h2 {
+        font-size: 18px;
     }
 }

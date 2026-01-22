@@ -4,69 +4,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil - X Clone</title>
+    <title>Accueil / X</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
     <section class="conteneur-application">
+        <!-- Sidebar gauche -->
         <aside class="barre-laterale">
             <nav class="menu-navigation">
                 <header class="logo-navigation">
-                    <h1>X</h1>
+                    <h1>𝕏</h1>
                 </header>
                 <ul class="liste-navigation">
                     <li class="element-navigation">
-                        <a href="index.html" class="lien-navigation actif">Accueil</a>
+                        <a href="index.html" class="lien-navigation actif">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M21.591 7.146L12.52 1.157c-.316-.21-.724-.21-1.04 0l-9.071 5.99c-.26.173-.409.456-.409.757v13.183c0 .502.418.913.929.913H9.14c.51 0 .929-.41.929-.913v-7.075h3.909v7.075c0 .502.417.913.928.913h6.165c.511 0 .929-.41.929-.913V7.904c0-.301-.158-.584-.409-.758z">
+                                </path>
+                            </svg>
+                            <span class="texte-navigation">Accueil</span>
+                        </a>
                     </li>
                     <li class="element-navigation">
-                        <a href="profile.html" class="lien-navigation">Profil</a>
+                        <a href="#" class="lien-navigation">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z">
+                                </path>
+                            </svg>
+                            <span class="texte-navigation">Explorer</span>
+                        </a>
                     </li>
                     <li class="element-navigation">
-                        <a href="#" id="logoutLink" class="lien-navigation">Déconnexion</a>
+                        <a href="#" class="lien-navigation">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M19.993 9.042C19.48 5.017 16.054 2 11.996 2s-7.49 3.021-7.999 7.051L2.866 18H7.1c.463 2.282 2.481 4 4.9 4s4.437-1.718 4.9-4h4.236l-1.143-8.958zM12 20c-1.306 0-2.417-.835-2.829-2h5.658c-.412 1.165-1.523 2-2.829 2zm-6.866-4l.847-6.698C6.364 6.272 8.941 4 11.996 4s5.627 2.268 6.013 5.295L18.858 16H5.134z">
+                                </path>
+                            </svg>
+                            <span class="texte-navigation">Notifications</span>
+                        </a>
+                    </li>
+                    <li class="element-navigation">
+                        <a href="#" class="lien-navigation">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5c-.276 0-.5.224-.5.5v2.764l8 3.638 8-3.636V5.5c0-.276-.224-.5-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5v-8.037z">
+                                </path>
+                            </svg>
+                            <span class="texte-navigation">Messages</span>
+                        </a>
+                    </li>
+                    <li class="element-navigation">
+                        <a href="profile.html" class="lien-navigation">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M5.651 19h12.698c-.337-1.8-1.023-3.21-1.945-4.19C15.318 13.65 13.838 13 12 13s-3.317.65-4.404 1.81c-.922.98-1.608 2.39-1.945 4.19zm.486-5.56C7.627 11.85 9.648 11 12 11s4.373.85 5.863 2.44c1.477 1.58 2.366 3.8 2.632 6.46l.11 1.1H3.395l.11-1.1c.266-2.66 1.155-4.88 2.632-6.46zM12 4c-1.105 0-2 .9-2 2s.895 2 2 2 2-.9 2-2-.895-2-2-2zM8 6c0-2.21 1.791-4 4-4s4 1.79 4 4-1.791 4-4 4-4-1.79-4-4z">
+                                </path>
+                            </svg>
+                            <span class="texte-navigation">Profil</span>
+                        </a>
+                    </li>
+                    <li class="element-navigation">
+                        <a href="#" class="lien-navigation">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M3.75 12c0-4.56 3.69-8.25 8.25-8.25s8.25 3.69 8.25 8.25-3.69 8.25-8.25 8.25S3.75 16.56 3.75 12zM12 1.75C6.34 1.75 1.75 6.34 1.75 12S6.34 22.25 12 22.25 22.25 17.66 22.25 12 17.66 1.75 12 1.75zm-4.75 11.5c.69 0 1.25-.56 1.25-1.25s-.56-1.25-1.25-1.25S6 11.31 6 12s.56 1.25 1.25 1.25zm4.75 0c.69 0 1.25-.56 1.25-1.25s-.56-1.25-1.25-1.25-1.25.56-1.25 1.25.56 1.25 1.25 1.25zm4.75 0c.69 0 1.25-.56 1.25-1.25s-.56-1.25-1.25-1.25-1.25.56-1.25 1.25.56 1.25 1.25 1.25z">
+                                </path>
+                            </svg>
+                            <span class="texte-navigation">Plus</span>
+                        </a>
+                    </li>
+                    <li class="element-navigation">
+                        <a href="#" id="logoutLink" class="lien-navigation">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M4 4.5A2.5 2.5 0 016.5 2H18a2.5 2.5 0 012.5 2.5v15a2.5 2.5 0 01-2.5 2.5H6.5A2.5 2.5 0 014 19.5V17h2v2.5a.5.5 0 00.5.5H18a.5.5 0 00.5-.5v-15a.5.5 0 00-.5-.5H6.5a.5.5 0 00-.5.5V7H4V4.5z">
+                                </path>
+                                <path d="M8.5 12l4-4v3h7v2h-7v3l-4-4z"></path>
+                            </svg>
+                            <span class="texte-navigation">Déconnexion</span>
+                        </a>
                     </li>
                 </ul>
+                <button class="bouton-poster">Poster</button>
+
+                <!-- Profil utilisateur en bas -->
+                <section class="profil-sidebar" id="profilSidebar">
+                    <img src="images/user-avatar.png" alt="Votre avatar" id="avatarSidebar">
+                    <section class="profil-sidebar-info">
+                        <p class="profil-sidebar-nom" id="nomSidebar">Utilisateur</p>
+                        <p class="profil-sidebar-username" id="usernameSidebar">@utilisateur</p>
+                    </section>
+                </section>
             </nav>
         </aside>
 
+        <!-- Contenu principal -->
         <main class="contenu-principal">
             <header class="en-tete-timeline">
                 <h2>Accueil</h2>
             </header>
 
+            <!-- Onglets Pour toi / Abonnements -->
+            <nav class="onglets-timeline">
+                <a href="#" class="onglet-timeline actif">Pour toi</a>
+                <a href="#" class="onglet-timeline">Abonnements</a>
+            </nav>
+
+            <!-- Formulaire de tweet -->
             <section class="section-formulaire-tweet">
                 <form class="formulaire-tweet" id="formulaireTweet">
                     <section class="contenu-formulaire-tweet">
                         <section class="avatar-formulaire-tweet">
-                            <img src="images/joel.jpg" alt="Votre avatar" class="avatar">
+                            <img src="images/user-avatar.png" alt="Votre avatar" class="avatar" id="avatarFormulaire">
                         </section>
                         <section class="champs-formulaire-tweet">
-                            <textarea id="contenuTweet" class="zone-texte-tweet" placeholder="Quoi de neuf ?"
-                                maxlength="280" rows="4"></textarea>
+                            <textarea id="contenuTweet" class="zone-texte-tweet" placeholder="Quoi de neuf ?!"
+                                maxlength="280" rows="3"></textarea>
                             <footer class="pied-formulaire-tweet">
-                                <span class="compteur-caracteres">
-                                    <span id="compteurCaracteres">0</span>/280
-                                </span>
-                                <button type="submit" class="bouton-tweeter">Tweeter</button>
+                                <section class="options-tweet">
+                                    <button type="button" class="option-tweet" id="boutonImage"
+                                        title="Ajouter une image">
+                                        <svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M3 5.5C3 4.119 4.119 3 5.5 3h13C19.881 3 21 4.119 21 5.5v13c0 1.381-1.119 2.5-2.5 2.5h-13C4.119 21 3 19.881 3 18.5v-13zM5.5 5c-.276 0-.5.224-.5.5v9.086l3-3 3 3 5-5 3 3V5.5c0-.276-.224-.5-.5-.5h-13zM19 15.414l-3-3-5 5-3-3-3 3V18.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-3.086zM9.75 7C8.784 7 8 7.784 8 8.75s.784 1.75 1.75 1.75 1.75-.784 1.75-1.75S10.716 7 9.75 7z">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                    <input type="file" id="inputImage" accept="image/*" style="display: none;">
+                                    <button type="button" class="option-tweet" title="GIF">
+                                        <svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M3 5.5C3 4.119 4.12 3 5.5 3h13C19.88 3 21 4.119 21 5.5v13c0 1.381-1.12 2.5-2.5 2.5h-13C4.12 21 3 19.881 3 18.5v-13zM5.5 5c-.28 0-.5.224-.5.5v13c0 .276.22.5.5.5h13c.28 0 .5-.224.5-.5v-13c0-.276-.22-.5-.5-.5h-13zM18 10.711V9.25h-3.74v5.5h1.44v-1.719h1.7V11.57h-1.7v-.859H18zM11.79 9.25h1.44v5.5h-1.44v-5.5zm-3.07 1.375c.34 0 .77.172 1.02.43l1.03-.86c-.51-.601-1.28-.945-2.05-.945C7.19 9.25 6 10.453 6 12s1.19 2.75 2.72 2.75c.85 0 1.54-.344 2.05-.945v-2.149H8.38v1.032H9.4v.515c-.17.086-.42.172-.68.172-.76 0-1.36-.602-1.36-1.375 0-.688.6-1.375 1.36-1.375z">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="option-tweet" title="Emoji">
+                                        <svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M8 9.5C8 8.119 8.672 7 9.5 7S11 8.119 11 9.5 10.328 12 9.5 12 8 10.881 8 9.5zm6.5 2.5c.828 0 1.5-1.119 1.5-2.5S15.328 7 14.5 7 13 8.119 13 9.5s.672 2.5 1.5 2.5zM12 16c-2.224 0-3.021-2.227-3.051-2.316l-1.897.633c.05.15 1.271 3.684 4.949 3.684s4.898-3.533 4.949-3.684l-1.896-.638c-.033.095-.83 2.322-3.053 2.322zm10.25-4.001c0 5.652-4.598 10.25-10.25 10.25S1.75 17.652 1.75 12 6.348 1.75 12 1.75 22.25 6.348 22.25 12zm-2 0c0-4.549-3.701-8.25-8.25-8.25S3.75 7.451 3.75 12s3.701 8.25 8.25 8.25 8.25-3.701 8.25-8.25z">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </section>
+                                <section style="display: flex; align-items: center; gap: 12px;">
+                                    <span class="compteur-caracteres">
+                                        <span id="compteurCaracteres">0</span>/280
+                                    </span>
+                                    <button type="submit" class="bouton-tweeter" disabled>Poster</button>
+                                </section>
                             </footer>
                         </section>
                     </section>
                 </form>
             </section>
 
+            <!-- Timeline des tweets -->
             <section class="timeline">
                 <!-- Les tweets seront chargés dynamiquement ici -->
             </section>
         </main>
+
+        <!-- Panneau droit -->
+        <aside class="panneau-droit">
+            <!-- Barre de recherche -->
+            <section class="recherche-container">
+                <section class="barre-recherche">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z">
+                        </path>
+                    </svg>
+                    <input type="text" class="input-recherche" placeholder="Rechercher" id="inputRecherche">
+                </section>
+            </section>
+
+            <!-- Tendances -->
+            <section class="section-tendances">
+                <h2 class="titre-section-tendances">Tendances pour vous</h2>
+                <article class="tendance">
+                    <p class="tendance-categorie">Tendance en France</p>
+                    <p class="tendance-sujet">#JavaScript</p>
+                    <p class="tendance-tweets">12.5K posts</p>
+                </article>
+                <article class="tendance">
+                    <p class="tendance-categorie">Technologie · Tendance</p>
+                    <p class="tendance-sujet">OpenAI</p>
+                    <p class="tendance-tweets">45.2K posts</p>
+                </article>
+                <article class="tendance">
+                    <p class="tendance-categorie">Programmation · Tendance</p>
+                    <p class="tendance-sujet">#WebDev</p>
+                    <p class="tendance-tweets">8.7K posts</p>
+                </article>
+                <article class="tendance">
+                    <p class="tendance-categorie">Tendance mondiale</p>
+                    <p class="tendance-sujet">#CloneX</p>
+                    <p class="tendance-tweets">3.2K posts</p>
+                </article>
+                <article class="tendance">
+                    <p class="tendance-categorie">Tech · Tendance</p>
+                    <p class="tendance-sujet">React</p>
+                    <p class="tendance-tweets">28.1K posts</p>
+                </article>
+                <a href="#" class="voir-plus-tendances">Voir plus</a>
+            </section>
+
+            <!-- Suggestions à suivre -->
+            <section class="section-suggestions">
+                <h2 class="titre-section-suggestions">Suggestions</h2>
+                <article class="suggestion-profil">
+                    <img src="images/user-avatar.png" alt="Avatar">
+                    <section class="suggestion-info">
+                        <p class="suggestion-nom">Elon Musk</p>
+                        <p class="suggestion-username">@elonmusk</p>
+                    </section>
+                    <button class="bouton-suivre">Suivre</button>
+                </article>
+                <article class="suggestion-profil">
+                    <img src="images/user-avatar.png" alt="Avatar">
+                    <section class="suggestion-info">
+                        <p class="suggestion-nom">Dan Abramov</p>
+                        <p class="suggestion-username">@dan_abramov</p>
+                    </section>
+                    <button class="bouton-suivre">Suivre</button>
+                </article>
+                <article class="suggestion-profil">
+                    <img src="images/user-avatar.png" alt="Avatar">
+                    <section class="suggestion-info">
+                        <p class="suggestion-nom">Wes Bos</p>
+                        <p class="suggestion-username">@wesbos</p>
+                    </section>
+                    <button class="bouton-suivre">Suivre</button>
+                </article>
+                <a href="#" class="voir-plus-tendances">Voir plus</a>
+            </section>
+
+            <!-- Footer -->
+            <footer class="footer-droit">
+                <p>
+                    <a href="#">Conditions d'utilisation</a> ·
+                    <a href="#">Politique de confidentialité</a> ·
+                    <a href="#">Cookies</a> ·
+                    <a href="#">Accessibilité</a>
+                </p>
+                <p style="margin-top: 8px;">© 2025 X Corp.</p>
+            </footer>
+        </aside>
     </section>
+
     <script src="js/auth.js"></script>
     <script src="js/tweets.js"></script>
     <script src="js/main.js"></script>
     <script>
-        // Protection de la route - vérifier si l'utilisateur est connecté
+        // Vérifier si l'utilisateur est connecté et mettre à jour la sidebar
         document.addEventListener('DOMContentLoaded', function () {
-            if (!AuthService.isAuthenticated()) {
-                window.location.href = 'login.html';
+            // Vérifier que les fonctions sont définies
+            if (typeof isAuthenticated !== 'function') {
+                console.log('Fonctions auth non chargées');
+                return;
+            }
+
+            if (!isAuthenticated()) {
+                // window.location.href = 'login.html';
+                return;
+            }
+
+            // Mettre à jour les informations utilisateur dans la sidebar
+            const currentUser = getCurrentUser();
+            if (currentUser) {
+                const avatarSidebar = document.getElementById('avatarSidebar');
+                const avatarFormulaire = document.getElementById('avatarFormulaire');
+                const nomSidebar = document.getElementById('nomSidebar');
+                const usernameSidebar = document.getElementById('usernameSidebar');
+
+                if (avatarSidebar) {
+                    avatarSidebar.src = currentUser.profilePicture || 'images/user-avatar.png';
+                }
+                if (avatarFormulaire) {
+                    avatarFormulaire.src = currentUser.profilePicture || 'images/user-avatar.png';
+                }
+                if (nomSidebar) {
+                    nomSidebar.textContent = currentUser.name || 'Utilisateur';
+                }
+                if (usernameSidebar) {
+                    usernameSidebar.textContent = '@' + (currentUser.username || 'utilisateur');
+                }
             }
 
             // Gérer la déconnexion
@@ -74,7 +300,7 @@
             if (logoutLink) {
                 logoutLink.addEventListener('click', function (e) {
                     e.preventDefault();
-                    AuthService.logout();
+                    logout();
                 });
             }
         });
