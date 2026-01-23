@@ -3,102 +3,92 @@
 ## 📊 Diagramme des Relations
 
 ```
-┌─────────────┐
-│   USERS     │
-│─────────────│
-│ id (PK)     │
-│ username    │
-│ name        │
-│ email       │
-│ password    │
-│ profile_pic │
-└──────┬──────┘
-       │
-       ├─────────────────────────────────────────┐
-       │                                         │
-       │ (1 user : N tweets)                    │ (1 user : N likes)
-       │                                         │
-       ▼                                         ▼
-┌──────────────┐                          ┌──────────────┐
-│   TWEETS     │                          │    LIKES     │
-│──────────────│                          │──────────────│
-│ id (PK)      │◄──┐                      │ id (PK)      │
-│ user_id (FK) │   │ (1 tweet : N likes)  │ user_id (FK) │──┐
-│ content      │   │                      │ tweet_id (FK)│  │
-│ likes (count)│   │                      │ created_at   │  │
-│ retweets     │   └──────────────────────┴──────────────┘  │
-│ reply_to (FK)│                                            │
-│ created_at   │       ┌──────────────────────────────────┘
-└──────────────┘       │
-       ▲               │
-       │ (self-ref)    │ (belongs to)
-       │               │
-       │     ┌─────────┴────────────────────────────────┐
-       │     │ (1 user : N retweets)                    │
-       │     │ (1 user : N bookmarks)                   │
-       │     │                                          │
-       │     ▼                                          ▼
-       │ ┌──────────────┐                       ┌──────────────┐
-       │ │  RETWEETS    │                       │  BOOKMARKS   │
-       │ │──────────────│                       │──────────────│
-       │ │ id (PK)      │                       │ id (PK)      │
-       │ │ user_id (FK) │                       │ user_id (FK) │
-       │ │ tweet_id(FK) │                       │ tweet_id(FK) │
-       │ │ created_at   │                       │ created_at   │
-       │ └──────────────┘                       └──────────────┘
-       │
-       └─────────────────────────────────────────────────┐
-                                                         │
-                    ┌────────────────────────────────────┤
-                    │ (1 tweet : N tweet_media)          │
-                    │                                    │
-                    ▼                                    ▼
-            ┌──────────────────┐              ┌──────────────────┐
-            │  TWEET_MEDIA     │              │     MEDIA        │
-            │──────────────────│              │──────────────────│
-            │ id (PK)          │              │ id (PK)          │
-            │ tweet_id (FK)────┼──────────────├──────────┐       │
-            │ media_id (FK)────┼──────────────┤──┐       │       │
-            │ position         │              │  │       │       │
-            │ created_at       │              └──┼───────┘       │
-            └──────────────────┘                 │ (1 media : N  │
-                                                 │  tweet_media) │
-                                                 │               │
-                                            ┌────┴───────────────┘
-                                            │
-                                            │ type: image|video
-                                            │ url: file path
-                                            │ file_size
-                                            │ mime_type
-
-┌──────────────────────────────────────────────────────────┐
-│            FOLLOWS (Self-Referencing)                    │
-│──────────────────────────────────────────────────────────│
-│ id (PK)                                                  │
-│ follower_id (FK) ─────► USERS(id)                       │
-│ following_id (FK) ────► USERS(id)                       │
-│ created_at                                               │
-│ UNIQUE(follower_id, following_id)                       │
-│ CHECK (follower_id != following_id)                     │
-└──────────────────────────────────────────────────────────┘
+┌──────────────────┐
+│     USERS        │
+│──────────────────│
+│ id (PK)          │
+│ username         │
+│ name             │
+│ email            │
+│ password         │
+│ profile_picture  │
+└────────┬─────────┘
+         │
+         ├─────────────────────────────────────────────────┐
+         │                                                 │
+         │ un utilisateur crée N tweets                   │ un utilisateur aime N tweets
+         │                                                 │
+         ▼                                                 ▼
+    ┌──────────────┐                                  ┌──────────────┐
+    │   TWEETS     │                                  │    LIKES     │
+    │──────────────│                                  │──────────────│
+    │ id (PK)      │◄──┐                              │ id (PK)      │
+    │ user_id (FK) │   │ 1 tweet reçoit N likes       │ user_id (FK) │
+    │ content      │   │                              │ tweet_id (FK)│──┐
+    │ reply_to (FK)│   │                              │ created_at   │  │
+    │ created_at   │   └──────────────────────────────┴──────────────┘  │
+    └──────────────┘                                                    │
+         ▲                                                              │
+         │ un tweet peut être une réponse à un autre tweet             │
+         │ (auto-référence)                                            │
+         │                    ┌───────────────────────────────────────┘
+         │                    │
+         │                    │ 1 tweet peut être retweeté par N utilisateurs
+         │                    │ 1 tweet peut être marqué par N utilisateurs
+         │                    │
+         │     ┌──────────────┴──────────────────┬────────────────────┐
+         │     │                                 │                    │
+         │     ▼                                 ▼                    ▼
+         │ ┌──────────────┐              ┌──────────────┐      ┌──────────────┐
+         │ │  RETWEETS    │              │  BOOKMARKS   │      │   FOLLOWS    │
+         │ │──────────────│              │──────────────│      │──────────────│
+         │ │ id (PK)      │              │ id (PK)      │      │ id (PK)      │
+         │ │ user_id (FK) │              │ user_id (FK) │      │ follower_id  │
+         │ │ tweet_id(FK) │              │ tweet_id(FK) │      │ following_id │
+         │ │ created_at   │              │ created_at   │      │ created_at   │
+         │ └──────────────┘              └──────────────┘      └──────────────┘
+         │
+         └─────────────────────────────────────────┐
+                                                   │ (auto-référence)
+                                                   │ un utilisateur suit N utilisateurs
+                                                   │ un utilisateur est suivi par N utilisateurs
+                                                   │
+         ┌─────────────────────────────────────────┘
+         │
+         │ 1 tweet peut avoir N médias
+         │ 1 média peut appartenir à N tweets
+         │
+         ▼
+    ┌──────────────────┐              ┌──────────────────┐
+    │  TWEET_MEDIA     │              │     MEDIA        │
+    │──────────────────│              │──────────────────│
+    │ id (PK)          │              │ id (PK)          │
+    │ tweet_id (FK)────┼──────────────├──────────┐       │
+    │ media_id (FK)────┼──────────────┤──┐       │       │
+    │ position         │              │  │       │       │
+    │ created_at       │              └──┼───────┘       │
+    └──────────────────┘                 │ type: image   │
+                                         │ url: path     │
+                                         │ file_size     │
+                                         │ mime_type     │
 ```
 
 ## 📋 Tableau des Relations
 
-| Table Source | Clé Étrangère | Table Cible | Type | Cascade |
+| Table Source | Clé Étrangère | Table Cible | Description | Cascade |
 |---|---|---|---|---|
-| `tweets` | `user_id` | `users(id)` | Many-to-One | ON DELETE CASCADE |
-| `tweets` | `reply_to` | `tweets(id)` | Self-Reference | ON DELETE CASCADE |
-| `tweet_media` | `tweet_id` | `tweets(id)` | Many-to-Many | ON DELETE CASCADE |
-| `tweet_media` | `media_id` | `media(id)` | Many-to-Many | ON DELETE CASCADE |
-| `likes` | `user_id` | `users(id)` | Many-to-Many | ON DELETE CASCADE |
-| `likes` | `tweet_id` | `tweets(id)` | Many-to-Many | ON DELETE CASCADE |
-| `retweets` | `user_id` | `users(id)` | Many-to-Many | ON DELETE CASCADE |
-| `retweets` | `tweet_id` | `tweets(id)` | Many-to-Many | ON DELETE CASCADE |
-| `bookmarks` | `user_id` | `users(id)` | Many-to-Many | ON DELETE CASCADE |
-| `bookmarks` | `tweet_id` | `tweets(id)` | Many-to-Many | ON DELETE CASCADE |
-| `follows` | `follower_id` | `users(id)` | Many-to-Many (Self) | ON DELETE CASCADE |
-| `follows` | `following_id` | `users(id)` | Many-to-Many (Self) | ON DELETE CASCADE |
+| `tweets` | `user_id` | `users(id)` | Un utilisateur crée plusieurs tweets | ON DELETE CASCADE |
+| `tweets` | `reply_to` | `tweets(id)` | Un tweet peut être une réponse à un autre tweet | ON DELETE CASCADE |
+| `tweet_media` | `tweet_id` | `tweets(id)` | Un tweet peut avoir plusieurs médias | ON DELETE CASCADE |
+| `tweet_media` | `media_id` | `media(id)` | Un média peut appartenir à plusieurs tweets | ON DELETE CASCADE |
+| `likes` | `user_id` | `users(id)` | Un utilisateur aime plusieurs tweets | ON DELETE CASCADE |
+| `likes` | `tweet_id` | `tweets(id)` | Un tweet peut être aimé par plusieurs utilisateurs | ON DELETE CASCADE |
+| `retweets` | `user_id` | `users(id)` | Un utilisateur retweet plusieurs tweets | ON DELETE CASCADE |
+| `retweets` | `tweet_id` | `tweets(id)` | Un tweet peut être retweeté par plusieurs utilisateurs | ON DELETE CASCADE |
+| `bookmarks` | `user_id` | `users(id)` | Un utilisateur marque plusieurs tweets | ON DELETE CASCADE |
+| `bookmarks` | `tweet_id` | `tweets(id)` | Un tweet peut être marqué par plusieurs utilisateurs | ON DELETE CASCADE |
+| `follows` | `follower_id` | `users(id)` | Un utilisateur suit plusieurs utilisateurs | ON DELETE CASCADE |
+| `follows` | `following_id` | `users(id)` | Un utilisateur est suivi par plusieurs utilisateurs | ON DELETE CASCADE |
 
 ## 🔗 Détail des Relations
 
