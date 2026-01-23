@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             // Activer/désactiver le bouton
             if (boutonTweeter) {
-                boutonTweeter.disabled = longueur === 0 && !selectedImage;
+                boutonTweeter.disabled = longueur === 0 && !window.selectedImage;
             }
         });
     }
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 try {
                     const base64 = await convertImageToBase64(file);
-                    selectedImage = base64;
+                    window.selectedImage = base64;
                     showImagePreview(base64);
 
                     // Activer le bouton si une image est sélectionnée
@@ -110,7 +110,12 @@ document.addEventListener('DOMContentLoaded', async function () {
                 return;
             }
 
-            // Afficher les tweets (les plus récents sont déjà en premier grâce au tri de l'API)
+            // Trier les tweets par date décroissante (les plus récents en premier)
+            mainTweets.sort(function (a, b) {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+
+            // Afficher les tweets (les plus récents en premier)
             for (let i = 0; i < mainTweets.length; i++) {
                 const tweet = mainTweets[i];
                 const user = usersMap[tweet.userId];
@@ -137,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             const content = contenuTweet.value.trim();
 
             // Vérifier qu'il y a du contenu ou une image
-            if (!content && !selectedImage) {
+            if (!content && !window.selectedImage) {
                 showMessage('Ajoutez du texte ou une image', 'erreur');
                 return;
             }
@@ -153,12 +158,16 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 // Préparer les médias
                 const mediaList = [];
-                if (selectedImage) {
+                if (window.selectedImage) {
+                    console.log('Image trouvée, ajout aux médias:', window.selectedImage.substring(0, 50) + '...');
                     mediaList.push({
                         type: 'image',
-                        url: selectedImage
+                        url: window.selectedImage
                     });
+                } else {
+                    console.log('Aucune image sélectionnée');
                 }
+                console.log('mediaList:', mediaList);
 
                 // Créer le tweet (utiliser l'ID de l'utilisateur connecté ou "1" par défaut)
                 const userId = currentUser ? currentUser.id : '1';

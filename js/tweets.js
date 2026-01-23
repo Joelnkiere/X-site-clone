@@ -5,8 +5,8 @@
 // La constante API_BASE_URL est définie dans auth.js
 // const API_BASE_URL = 'http://localhost:3000';
 
-// Variable pour stocker l'image sélectionnée
-let selectedImage = null;
+// Variable pour stocker l'image sélectionnée - rendre elle accessible globalement
+window.selectedImage = null;
 
 // ============================================
 // FONCTIONS UTILITAIRES
@@ -169,6 +169,14 @@ async function createTweet(userId, content, mediaList, replyTo) {
             createdAt: new Date().toISOString(),
             replyTo: replyTo ? replyTo.toString() : null
         };
+
+        console.log('Tweet à envoyer:', {
+            id: newTweet.id,
+            userId: newTweet.userId,
+            content: newTweet.content,
+            media_count: newTweet.media.length,
+            createdAt: newTweet.createdAt
+        });
 
         // Envoyer au serveur
         const response = await fetch(API_BASE_URL + '/tweets', {
@@ -477,7 +485,7 @@ function showImagePreview(imageUrl) {
 }
 
 function removeImagePreview() {
-    selectedImage = null;
+    window.selectedImage = null;
     const preview = document.getElementById('imagePreview');
     if (preview) {
         preview.remove();
